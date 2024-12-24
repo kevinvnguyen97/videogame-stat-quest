@@ -10,8 +10,11 @@ import {
   PopoverTrigger,
 } from "@components/ui/popover";
 import { ColorModeButton } from "@components/ui/color-mode";
+import { useNavigate } from "react-router-dom";
 
 export const NavigationBar = () => {
+  const navigate = useNavigate();
+
   return (
     <HStack display="flex" justifyContent="space-between">
       <HStack spaceX={0}>
@@ -21,7 +24,7 @@ export const NavigationBar = () => {
           height="auto"
           paddingRight={3}
         />
-        <Button variant="ghost" paddingX={3}>
+        <Button variant="ghost" paddingX={3} onClick={() => navigate("/")}>
           Home
         </Button>
         <Button variant="ghost" paddingX={3} disabled>
