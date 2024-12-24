@@ -1,3 +1,4 @@
+import { getGamesByName } from "@api/igdb";
 import { Group, Input, IconButton } from "@chakra-ui/react";
 import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -13,8 +14,17 @@ export const GameSearch = () => {
         placeholder="Search for a game"
         variant="subtle"
         size="xl"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            getGamesByName(input);
+          }
+        }}
       />
-      <IconButton size="xl" colorPalette="blue">
+      <IconButton
+        size="xl"
+        colorPalette="blue"
+        onClick={() => getGamesByName(input)}
+      >
         <AiOutlineSearch />
       </IconButton>
     </Group>
