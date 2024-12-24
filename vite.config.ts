@@ -29,6 +29,10 @@ export default defineConfig({
         find: "@pages",
         replacement: fileURLToPath(new URL("./src/pages", import.meta.url)),
       },
+      {
+        find: "@types",
+        replacement: fileURLToPath(new URL("./src/types", import.meta.url)),
+      },
     ],
   },
 });

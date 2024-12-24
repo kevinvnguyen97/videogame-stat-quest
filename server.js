@@ -6,7 +6,7 @@ const host = process.env.HOST || "0.0.0.0";
 const port = process.env.PORT || 8080;
 
 const server = createServer({
-  originWhitelist: ["localhost:5173"], // Allow all origins
+  originWhitelist: [], // Allow all origins
   requireHeader: ["origin", "x-requested-with"],
   removeHeaders: ["cookie", "cookie2"],
 });
