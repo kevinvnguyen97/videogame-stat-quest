@@ -8,7 +8,7 @@ const GAME_FIELDS: (keyof GameSearchResult)[] = [
   "parent_game",
 ];
 
-const COVER_FIELDS: (keyof Cover)[] = ["url"];
+const COVER_FIELDS: (keyof Cover)[] = ["url", "game"];
 
 export const getGamesByName = async (gameName: string) => {
   const apiUrl = encodeURI(
@@ -40,6 +40,9 @@ export const getCoversById = async (ids: number[]) => {
     },
   });
   const coverSearchResults = (await fetchCovers.json()) as CoverSearchResult[];
-  console.log("COVER RESULTS:", coverSearchResults);
-  return coverSearchResults;
+  const hiResCoverSearchResults = coverSearchResults.map((cover) => ({
+    ...cover,
+    url: cover.url.replace("t_thumb", "t_cover_big"),
+  }));
+  return hiResCoverSearchResults;
 };

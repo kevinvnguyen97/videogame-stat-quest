@@ -1,12 +1,4 @@
-import {
-  Box,
-  Card,
-  HStack,
-  Text,
-  VStack,
-  Image,
-  Button,
-} from "@chakra-ui/react";
+import { Box, Card, HStack, Text, VStack, Image } from "@chakra-ui/react";
 import { GameSearch } from "@components/custom/GameSearch";
 import { APP_NAME } from "@constants/appName";
 import { useEffect, useLayoutEffect, useState } from "react";
@@ -47,17 +39,16 @@ export const Results = () => {
         </Card.Root>
         <VStack mdTo2xl={{ width: "2/3" }}>
           {games.map((game) => {
+            const cover = covers.find((cover) => cover.game === game.id);
             return (
               <Card.Root
                 variant="subtle"
                 width="100%"
                 flexDirection="row"
                 _hover={{ cursor: "pointer" }}
+                alignItems="start"
               >
-                <Image
-                  src={covers.find((cover) => cover.id === game.cover)?.url}
-                  minWidth={200}
-                />
+                <Image src={cover?.url} fit="contain" />
                 <VStack alignItems="start">
                   <Card.Header fontWeight="bold">{game.name}</Card.Header>
                   <Card.Body>{game.summary}</Card.Body>

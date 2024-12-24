@@ -71,6 +71,9 @@ declare type GameSearchResult = Pick<
 declare type Cover = {
   id: number;
   url: string;
+  game?: number;
+  width: number;
+  height: number;
 };
 
-declare type CoverSearchResult = Pick<Cover, "id" | "url">;
+declare type CoverSearchResult = Pick<Cover, "id" | "url" | "game">;
