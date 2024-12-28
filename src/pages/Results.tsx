@@ -3,7 +3,7 @@ import { GameSearch } from "@components/custom/GameSearch";
 import { APP_NAME } from "@constants/appName";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getCoversById, getGamesByName } from "@api/igdb";
+import { getIGDBRecords, IGDBEndpoint } from "@api/igdb";
 
 export const Results = () => {
   const { searchText } = useParams();
@@ -17,11 +17,23 @@ export const Results = () => {
   }, [searchText]);
   useEffect(() => {
     const searchForGame = async (gameName: string) => {
-      const searchResults = await getGamesByName(gameName);
-      const coverIds = searchResults.map((game) => game.cover);
-      const coversForGame = await getCoversById(coverIds);
-      setGames(searchResults.filter((game) => !game.parent_game));
-      setCovers(coversForGame);
+      const games = await getIGDBRecords<Game>({
+        endpoint: IGDBEndpoint.GAMES,
+        search: gameName,
+      });
+      const uniqueGames = games.filter(({ parent_game }) => !parent_game);
+      const coverIds = uniqueGames.map(({ cover }) => cover);
+      const coversForGame = await getIGDBRecords<Cover>({
+        endpoint: IGDBEndpoint.COVERS,
+        ids: coverIds,
+      });
+      const hiResCovers = coversForGame.map((cover) => ({
+        ...cover,
+        url: cover.url.replace("t_thumb", "t_cover_big"),
+      }));
+
+      setGames(uniqueGames);
+      setCovers(hiResCovers);
     };
     if (searchText) {
       searchForGame(searchText);

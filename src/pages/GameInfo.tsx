@@ -1,5 +1,5 @@
-import { getCoversById, getGamesById } from "@api/igdb";
-import { Box, Text, Image } from "@chakra-ui/react";
+import { getIGDBRecords, IGDBEndpoint } from "@api/igdb";
+import { Box, Text, Image, HStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -11,11 +11,28 @@ export const GameInfo = () => {
 
   useEffect(() => {
     const getGameInformation = async () => {
-      const game = (await getGamesById([parseInt(id)]))[0];
-      const cover = (await getCoversById([game.cover]))[0];
-
-      setGame(game);
-      setCover(cover);
+      if (id) {
+        const game = (
+          await getIGDBRecords<Game>({
+            endpoint: IGDBEndpoint.GAMES,
+            ids: [parseInt(id)],
+          })
+        )[0];
+        if (game) {
+          const cover = (
+            await getIGDBRecords<Cover>({
+              endpoint: IGDBEndpoint.COVERS,
+              ids: [game.cover],
+            })
+          )[0];
+          const hiResCover = {
+            ...cover,
+            url: cover.url.replace("t_thumb", "t_cover_big"),
+          };
+          setGame(game);
+          setCover(hiResCover);
+        }
+      }
     };
     getGameInformation();
   }, [id]);
@@ -25,7 +42,10 @@ export const GameInfo = () => {
       <Text textAlign="center" fontSize="4xl">
         {game?.name ?? "Loading"}
       </Text>
-      <Image src={cover?.url} />
+      <HStack alignItems="top">
+        <Text>{game?.summary}</Text>
+        <Image src={cover?.url} />
+      </HStack>
     </Box>
   );
 };

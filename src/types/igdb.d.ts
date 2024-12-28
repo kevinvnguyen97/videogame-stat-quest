@@ -69,4 +69,7 @@ declare type Cover = {
   game?: number;
   width: number;
   height: number;
+  image_id: string;
+  alpha_channel: boolean;
+  animated: boolean;
 };
