@@ -34,20 +34,22 @@ export const NavigationBar = () => {
           Other Favorites
         </Button>
       </HStack>
-      <PopoverRoot>
-        <PopoverTrigger>
-          <Avatar variant="solid" as={Button} />
-        </PopoverTrigger>
-        <PopoverContent>
-          <PopoverArrow />
-          <PopoverHeader>username</PopoverHeader>
-          <PopoverBody>Login stuff</PopoverBody>
-          <PopoverFooter>
-            <ColorModeButton />
-            <Button disabled>Log Out</Button>
-          </PopoverFooter>
-        </PopoverContent>
-      </PopoverRoot>
+      <HStack spaceX={0}>
+        <ColorModeButton />
+        <PopoverRoot>
+          <PopoverTrigger>
+            <Avatar variant="subtle" />
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverHeader>username</PopoverHeader>
+            <PopoverBody>Login stuff</PopoverBody>
+            <PopoverFooter>
+              <Button disabled>Log Out</Button>
+            </PopoverFooter>
+          </PopoverContent>
+        </PopoverRoot>
+      </HStack>
     </HStack>
   );
 };

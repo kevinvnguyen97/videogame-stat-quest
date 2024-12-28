@@ -55,6 +55,7 @@ export const Results = () => {
             const cover = covers.find((cover) => cover.game === game.id);
             return (
               <Card.Root
+                key={game.id}
                 variant="subtle"
                 width="100%"
                 flexDirection="row"
