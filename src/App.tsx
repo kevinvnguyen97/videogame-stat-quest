@@ -4,6 +4,7 @@ import { Box } from "@chakra-ui/react";
 import { Home } from "@pages/Home";
 import { Route, Routes } from "react-router-dom";
 import { Results } from "@pages/Results";
+import { GameInfo } from "@pages/GameInfo";
 
 export const App = () => {
   return (
@@ -13,6 +14,7 @@ export const App = () => {
         <Routes>
           <Route index element={<Home />} />
           <Route path="/search/:searchText" element={<Results />} />
+          <Route path="/game/:id" element={<GameInfo />} />
         </Routes>
       </Box>
     </Box>

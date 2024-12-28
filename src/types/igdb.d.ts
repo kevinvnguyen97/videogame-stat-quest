@@ -63,11 +63,6 @@ declare type Game = {
   websites?: number[];
 };
 
-declare type GameSearchResult = Pick<
-  Game,
-  "id" | "name" | "summary" | "cover" | "url" | "parent_game"
->;
-
 declare type Cover = {
   id: number;
   url: string;
@@ -75,5 +70,3 @@ declare type Cover = {
   width: number;
   height: number;
 };
-
-declare type CoverSearchResult = Pick<Cover, "id" | "url" | "game">;

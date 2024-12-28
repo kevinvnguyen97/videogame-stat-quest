@@ -2,14 +2,15 @@ import { Box, Card, HStack, Text, VStack, Image } from "@chakra-ui/react";
 import { GameSearch } from "@components/custom/GameSearch";
 import { APP_NAME } from "@constants/appName";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getCoversById, getGamesByName } from "@api/igdb";
 
 export const Results = () => {
   const { searchText } = useParams();
+  const navigate = useNavigate();
 
-  const [games, setGames] = useState<GameSearchResult[]>([]);
-  const [covers, setCovers] = useState<Partial<Cover>[]>([]);
+  const [games, setGames] = useState<Game[]>([]);
+  const [covers, setCovers] = useState<Cover[]>([]);
 
   useLayoutEffect(() => {
     window.document.title = `Search Results for "${searchText}" - ${APP_NAME}`;
@@ -47,6 +48,7 @@ export const Results = () => {
                 flexDirection="row"
                 _hover={{ cursor: "pointer" }}
                 alignItems="start"
+                onClick={() => navigate(`/game/${game.id}`)}
               >
                 <Image src={cover?.url} fit="contain" />
                 <VStack alignItems="start">

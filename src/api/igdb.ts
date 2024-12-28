@@ -1,6 +1,6 @@
 const BASE_URL = "http://localhost:8080/http://api.igdb.com/v4";
 
-const GAME_FIELDS: (keyof GameSearchResult)[] = [
+const GAME_FIELDS: (keyof Game)[] = [
   "cover",
   "name",
   "summary",
@@ -22,8 +22,23 @@ export const getGamesByName = async (gameName: string) => {
       Authorization: `Bearer ${import.meta.env.VITE_IGDB_ACCESS_TOKEN}`,
     },
   });
-  const gameSearchResults = (await fetchGames.json()) as GameSearchResult[];
-  console.log("GAME RESULTS:", gameSearchResults);
+  const gameSearchResults = (await fetchGames.json()) as Game[];
+  return gameSearchResults;
+};
+
+export const getGamesById = async (ids: number[]) => {
+  const apiUrl = encodeURI(
+    `${BASE_URL}/games/${ids.join(",")}?fields=${GAME_FIELDS.join(",")}`
+  );
+  const fetchGames = await fetch(apiUrl, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Client-ID": import.meta.env.VITE_IGDB_CLIENT_ID,
+      Authorization: `Bearer ${import.meta.env.VITE_IGDB_ACCESS_TOKEN}`,
+    },
+  });
+  const gameSearchResults = (await fetchGames.json()) as Game[];
   return gameSearchResults;
 };
 
@@ -39,7 +54,7 @@ export const getCoversById = async (ids: number[]) => {
       Authorization: `Bearer ${import.meta.env.VITE_IGDB_ACCESS_TOKEN}`,
     },
   });
-  const coverSearchResults = (await fetchCovers.json()) as CoverSearchResult[];
+  const coverSearchResults = (await fetchCovers.json()) as Cover[];
   const hiResCoverSearchResults = coverSearchResults.map((cover) => ({
     ...cover,
     url: cover.url.replace("t_thumb", "t_cover_big"),
