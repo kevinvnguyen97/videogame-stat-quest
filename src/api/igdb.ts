@@ -30,3 +30,42 @@ export async function getIGDBRecords<T>(args: {
   const records = (await fetchRecords.json()) as T[];
   return records;
 }
+
+export const getGameInfo = async (id: number) => {
+  const game = (
+    await getIGDBRecords<Game>({
+      endpoint: IGDBEndpoint.GAMES,
+      ids: [id],
+    })
+  )[0];
+
+  const [covers, platforms, genres, videos, gameModes] = await Promise.all([
+    getIGDBRecords<Cover>({
+      endpoint: IGDBEndpoint.COVERS,
+      ids: [game.cover],
+    }),
+    getIGDBRecords<Platform>({
+      endpoint: IGDBEndpoint.PLATFORMS,
+      ids: game.platforms,
+    }),
+    getIGDBRecords<Genre>({
+      endpoint: IGDBEndpoint.GENRES,
+      ids: game.genres,
+    }),
+    getIGDBRecords<GameVideo>({
+      endpoint: IGDBEndpoint.GAME_VIDEOS,
+      ids: game.videos,
+    }),
+    getIGDBRecords<GameMode>({
+      endpoint: IGDBEndpoint.GAME_MODES,
+      ids: game.game_modes,
+    }),
+  ]);
+
+  const cover = covers[0];
+  const hiResCover: Cover = {
+    ...cover,
+    url: cover.url.replace("t_thumb", "t_cover_big_2x"),
+  };
+  return { game, cover: hiResCover, platforms, genres, videos, gameModes };
+};

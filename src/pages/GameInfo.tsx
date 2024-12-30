@@ -1,4 +1,4 @@
-import { getIGDBRecords, IGDBEndpoint } from "@api/igdb";
+import { getGameInfo, getIGDBRecords, IGDBEndpoint } from "@api/igdb";
 import { Box, Text, Image, HStack, Table, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -24,48 +24,14 @@ export const GameInfo = () => {
   useEffect(() => {
     const getGameInformation = async () => {
       if (id) {
-        const game = (
-          await getIGDBRecords<Game>({
-            endpoint: IGDBEndpoint.GAMES,
-            ids: [parseInt(id)],
-          })
-        )[0];
-        if (game) {
-          const [covers, platforms, genres, videos, gameModes] =
-            await Promise.all([
-              getIGDBRecords<Cover>({
-                endpoint: IGDBEndpoint.COVERS,
-                ids: [game.cover],
-              }),
-              getIGDBRecords<Platform>({
-                endpoint: IGDBEndpoint.PLATFORMS,
-                ids: game.platforms,
-              }),
-              getIGDBRecords<Genre>({
-                endpoint: IGDBEndpoint.GENRES,
-                ids: game.genres,
-              }),
-              getIGDBRecords<GameVideo>({
-                endpoint: IGDBEndpoint.GAME_VIDEOS,
-                ids: game.videos,
-              }),
-              getIGDBRecords<GameMode>({
-                endpoint: IGDBEndpoint.GAME_MODES,
-                ids: game.game_modes,
-              }),
-            ]);
-          const cover = covers[0];
-          const hiResCover = {
-            ...cover,
-            url: cover.url.replace("t_thumb", "t_cover_big_2x"),
-          };
-          setGame(game);
-          setCover(hiResCover);
-          setPlatforms(platforms);
-          setGenres(genres);
-          setVideos(videos);
-          setGameModes(gameModes);
-        }
+        const { game, cover, platforms, genres, videos, gameModes } =
+          await getGameInfo(parseInt(id));
+        setGame(game);
+        setCover(cover);
+        setPlatforms(platforms);
+        setGenres(genres);
+        setVideos(videos);
+        setGameModes(gameModes);
       }
     };
     getGameInformation();
