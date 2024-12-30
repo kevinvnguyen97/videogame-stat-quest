@@ -33,6 +33,10 @@ export default defineConfig({
         find: "@types",
         replacement: fileURLToPath(new URL("./src/types", import.meta.url)),
       },
+      {
+        find: "@utils",
+        replacement: fileURLToPath(new URL("./src/utils", import.meta.url)),
+      },
     ],
   },
 });

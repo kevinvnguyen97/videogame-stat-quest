@@ -3,6 +3,7 @@ const BASE_URL = "http://localhost:8080/http://api.igdb.com/v4";
 export enum IGDBEndpoint {
   GAMES = "games",
   COVERS = "covers",
+  PLATFORMS = "platforms",
 }
 
 export async function getIGDBRecords<T>(args: {

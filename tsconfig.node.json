@@ -11,7 +11,8 @@
       "@pages/*": ["pages/*"],
       "@constants/*": ["constants/*"],
       "@api/*": ["api/*"],
-      "@types/*": ["types/*"]
+      "@types/*": ["types/*"],
+      "@utils/*": ["utils/*"]
     },
     "baseUrl": "src",
 

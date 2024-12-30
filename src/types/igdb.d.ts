@@ -20,7 +20,7 @@ declare type Game = {
   expanded_games?: number[];
   expansions?: number[];
   external_games?: number[];
-  first_release_date: string[];
+  first_release_date: number;
   follows?: number;
   forks?: number[];
   franchise?: number;
@@ -36,7 +36,7 @@ declare type Game = {
   multiplayer_modes?: number[];
   name: string;
   parent_game?: number;
-  platforms?: number[];
+  platforms: number[];
   player_perspectives?: number[];
   ports?: number[];
   rating?: number;
@@ -72,4 +72,22 @@ declare type Cover = {
   image_id: string;
   alpha_channel: boolean;
   animated: boolean;
+};
+
+declare type Platform = {
+  abbreviation: string;
+  alternative_name: string;
+  category: string;
+  checksum: string;
+  created_at: number;
+  generation: number;
+  name: string;
+  platform_family: number;
+  platform_logo: number;
+  slug: string;
+  summary: string;
+  updated_at: number;
+  url: string;
+  versions: number[];
+  websites: number[];
 };

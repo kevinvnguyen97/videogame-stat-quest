@@ -6,7 +6,8 @@
       "@pages/*": ["pages/*"],
       "@constants/*": ["constants/*"],
       "@api/*": ["api/*"],
-      "@types/*": ["types/*"]
+      "@types/*": ["types/*"],
+      "@utils/*": ["urils/*"]
     },
     "baseUrl": "src"
   },
