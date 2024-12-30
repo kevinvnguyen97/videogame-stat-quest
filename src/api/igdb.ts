@@ -5,6 +5,7 @@ export enum IGDBEndpoint {
   COVERS = "covers",
   PLATFORMS = "platforms",
   GENRES = "genres",
+  GAME_VIDEOS = "game_videos",
 }
 
 export async function getIGDBRecords<T>(args: {
@@ -26,6 +27,5 @@ export async function getIGDBRecords<T>(args: {
     },
   });
   const records = (await fetchRecords.json()) as T[];
-  console.log("RECORDS:", records);
   return records;
 }

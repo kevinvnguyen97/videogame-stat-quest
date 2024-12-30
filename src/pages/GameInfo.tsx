@@ -1,8 +1,15 @@
 import { getIGDBRecords, IGDBEndpoint } from "@api/igdb";
-import { Box, Text, Image, HStack, Table } from "@chakra-ui/react";
+import { Box, Text, Image, HStack, Table, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { formatIGDBDate } from "@utils/index";
+import { YouTubeIFrame } from "@components/custom/YouTubeIFrame";
+import {
+  AccordionItem,
+  AccordionItemContent,
+  AccordionItemTrigger,
+  AccordionRoot,
+} from "@components/ui/accordion";
 
 export const GameInfo = () => {
   const { id } = useParams();
@@ -11,6 +18,7 @@ export const GameInfo = () => {
   const [cover, setCover] = useState<Cover>();
   const [platforms, setPlatforms] = useState<Platform[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
+  const [videos, setVideos] = useState<GameVideo[]>([]);
 
   useEffect(() => {
     const getGameInformation = async () => {
@@ -22,7 +30,7 @@ export const GameInfo = () => {
           })
         )[0];
         if (game) {
-          const [covers, platforms, genres] = await Promise.all([
+          const [covers, platforms, genres, videos] = await Promise.all([
             getIGDBRecords<Cover>({
               endpoint: IGDBEndpoint.COVERS,
               ids: [game.cover],
@@ -35,6 +43,10 @@ export const GameInfo = () => {
               endpoint: IGDBEndpoint.GENRES,
               ids: game.genres,
             }),
+            getIGDBRecords<GameVideo>({
+              endpoint: IGDBEndpoint.GAME_VIDEOS,
+              ids: game.videos,
+            }),
           ]);
           const cover = covers[0];
           const hiResCover = {
@@ -45,6 +57,7 @@ export const GameInfo = () => {
           setCover(hiResCover);
           setPlatforms(platforms);
           setGenres(genres);
+          setVideos(videos);
         }
       }
     };
@@ -56,7 +69,7 @@ export const GameInfo = () => {
   }
 
   return (
-    <Box>
+    <VStack gap={5}>
       <Text textAlign="center" fontSize="4xl">
         {game.name}
       </Text>
@@ -86,6 +99,23 @@ export const GameInfo = () => {
         </Table.Root>
         <Text maxWidth={500}>{game.summary}</Text>
       </HStack>
-    </Box>
+      <AccordionRoot collapsible size="lg">
+        <AccordionItem value="0">
+          <AccordionItemTrigger>Videos</AccordionItemTrigger>
+          <AccordionItemContent>
+            <HStack gap={5} overflowX="scroll">
+              {videos.map(({ video_id }) => (
+                <YouTubeIFrame
+                  key={video_id}
+                  videoId={video_id}
+                  width={400}
+                  height={225}
+                />
+              ))}
+            </HStack>
+          </AccordionItemContent>
+        </AccordionItem>
+      </AccordionRoot>
+    </VStack>
   );
 };

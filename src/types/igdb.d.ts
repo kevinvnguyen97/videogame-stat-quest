@@ -100,3 +100,10 @@ declare type Genre = {
   updated_at: number;
   url: string;
 };
+
+declare type GameVideo = {
+  checksum?: string;
+  game: number;
+  name: string;
+  video_id: string;
+};
