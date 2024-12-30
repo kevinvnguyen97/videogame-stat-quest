@@ -19,6 +19,7 @@ export const GameInfo = () => {
   const [platforms, setPlatforms] = useState<Platform[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
   const [videos, setVideos] = useState<GameVideo[]>([]);
+  const [gameModes, setGameModes] = useState<GameMode[]>([]);
 
   useEffect(() => {
     const getGameInformation = async () => {
@@ -30,24 +31,29 @@ export const GameInfo = () => {
           })
         )[0];
         if (game) {
-          const [covers, platforms, genres, videos] = await Promise.all([
-            getIGDBRecords<Cover>({
-              endpoint: IGDBEndpoint.COVERS,
-              ids: [game.cover],
-            }),
-            getIGDBRecords<Platform>({
-              endpoint: IGDBEndpoint.PLATFORMS,
-              ids: game.platforms,
-            }),
-            getIGDBRecords<Genre>({
-              endpoint: IGDBEndpoint.GENRES,
-              ids: game.genres,
-            }),
-            getIGDBRecords<GameVideo>({
-              endpoint: IGDBEndpoint.GAME_VIDEOS,
-              ids: game.videos,
-            }),
-          ]);
+          const [covers, platforms, genres, videos, gameModes] =
+            await Promise.all([
+              getIGDBRecords<Cover>({
+                endpoint: IGDBEndpoint.COVERS,
+                ids: [game.cover],
+              }),
+              getIGDBRecords<Platform>({
+                endpoint: IGDBEndpoint.PLATFORMS,
+                ids: game.platforms,
+              }),
+              getIGDBRecords<Genre>({
+                endpoint: IGDBEndpoint.GENRES,
+                ids: game.genres,
+              }),
+              getIGDBRecords<GameVideo>({
+                endpoint: IGDBEndpoint.GAME_VIDEOS,
+                ids: game.videos,
+              }),
+              getIGDBRecords<GameMode>({
+                endpoint: IGDBEndpoint.GAME_MODES,
+                ids: game.game_modes,
+              }),
+            ]);
           const cover = covers[0];
           const hiResCover = {
             ...cover,
@@ -58,6 +64,7 @@ export const GameInfo = () => {
           setPlatforms(platforms);
           setGenres(genres);
           setVideos(videos);
+          setGameModes(gameModes);
         }
       }
     };
@@ -92,6 +99,14 @@ export const GameInfo = () => {
             <Table.ColumnHeader>Genres</Table.ColumnHeader>
             <Table.Cell>
               {genres.map(({ name }) => (
+                <Box>{name}</Box>
+              ))}
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.ColumnHeader>Game Modes</Table.ColumnHeader>
+            <Table.Cell>
+              {gameModes.map(({ name }) => (
                 <Box>{name}</Box>
               ))}
             </Table.Cell>

@@ -107,3 +107,12 @@ declare type GameVideo = {
   name: string;
   video_id: string;
 };
+
+declare type GameMode = {
+  checksum?: string;
+  created_at: number;
+  name: string;
+  slug: string;
+  updated_at: number;
+  url: string;
+};
