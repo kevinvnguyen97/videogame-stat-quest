@@ -53,8 +53,8 @@ declare type Game = {
   summary?: string;
   tags?: number[];
   themes?: number[];
-  total_rating?: number;
-  total_rating_count?: number;
+  total_rating: number;
+  total_rating_count: number;
   updated_at?: number;
   url?: string;
   version_parent?: number;

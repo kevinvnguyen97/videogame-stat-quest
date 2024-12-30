@@ -80,12 +80,19 @@ export const GameInfo = () => {
       <Text textAlign="center" fontSize="4xl">
         {game.name}
       </Text>
-      <HStack justifyContent="center" gap={5}>
+      <HStack justifyContent="center" alignItems="start" gap={5}>
         <Image src={cover.url} width={350} height="auto" />
-        <Table.Root width={500}>
+        <Table.Root width={350}>
           <Table.Row>
             <Table.ColumnHeader>Release Date</Table.ColumnHeader>
             <Table.Cell>{formatIGDBDate(game.first_release_date)}</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.ColumnHeader>Rating</Table.ColumnHeader>
+            <Table.Cell>
+              {Math.round(game.total_rating)}% ({game.total_rating_count}{" "}
+              reviews)
+            </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.ColumnHeader>Platforms</Table.ColumnHeader>
