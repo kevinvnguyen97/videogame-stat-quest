@@ -10,6 +10,7 @@ export const GameInfo = () => {
   const [game, setGame] = useState<Game>();
   const [cover, setCover] = useState<Cover>();
   const [platforms, setPlatforms] = useState<Platform[]>([]);
+  const [genres, setGenres] = useState<Genre[]>([]);
 
   useEffect(() => {
     const getGameInformation = async () => {
@@ -21,7 +22,7 @@ export const GameInfo = () => {
           })
         )[0];
         if (game) {
-          const [covers, platforms] = await Promise.all([
+          const [covers, platforms, genres] = await Promise.all([
             getIGDBRecords<Cover>({
               endpoint: IGDBEndpoint.COVERS,
               ids: [game.cover],
@@ -30,9 +31,9 @@ export const GameInfo = () => {
               endpoint: IGDBEndpoint.PLATFORMS,
               ids: game.platforms,
             }),
-            getIGDBRecords<Video>({
-              endpoint: IGDBEndpoint.VIDEOS,
-              ids: game.videos,
+            getIGDBRecords<Genre>({
+              endpoint: IGDBEndpoint.GENRES,
+              ids: game.genres,
             }),
           ]);
           const cover = covers[0];
@@ -43,6 +44,7 @@ export const GameInfo = () => {
           setGame(game);
           setCover(hiResCover);
           setPlatforms(platforms);
+          setGenres(genres);
         }
       }
     };
@@ -58,8 +60,8 @@ export const GameInfo = () => {
       <Text textAlign="center" fontSize="4xl">
         {game.name}
       </Text>
-      <HStack justifyContent="center">
-        <Image src={cover.url} scale={0.7} />
+      <HStack justifyContent="center" gap={5}>
+        <Image src={cover.url} width={350} height="auto" />
         <Table.Root width={500}>
           <Table.Row>
             <Table.ColumnHeader>Release Date</Table.ColumnHeader>
@@ -74,10 +76,15 @@ export const GameInfo = () => {
             </Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.ColumnHeader>Summary</Table.ColumnHeader>
-            <Table.Cell>{game.summary}</Table.Cell>
+            <Table.ColumnHeader>Genres</Table.ColumnHeader>
+            <Table.Cell>
+              {genres.map(({ name }) => (
+                <Box>{name}</Box>
+              ))}
+            </Table.Cell>
           </Table.Row>
         </Table.Root>
+        <Text maxWidth={500}>{game.summary}</Text>
       </HStack>
     </Box>
   );

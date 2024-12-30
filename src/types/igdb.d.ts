@@ -91,3 +91,12 @@ declare type Platform = {
   versions: number[];
   websites: number[];
 };
+
+declare type Genre = {
+  checksum?: string;
+  created_at: number;
+  name: string;
+  slug: string;
+  updated_at: number;
+  url: string;
+};

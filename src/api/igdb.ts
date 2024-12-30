@@ -4,6 +4,7 @@ export enum IGDBEndpoint {
   GAMES = "games",
   COVERS = "covers",
   PLATFORMS = "platforms",
+  GENRES = "genres",
 }
 
 export async function getIGDBRecords<T>(args: {
