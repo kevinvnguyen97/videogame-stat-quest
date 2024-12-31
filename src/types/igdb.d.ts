@@ -23,8 +23,8 @@ declare type Game = {
   first_release_date: EpochTimeStamp;
   follows?: number;
   forks?: number[];
-  franchise?: number;
-  franchises?: number[];
+  franchise: number;
+  franchises: number[];
   game_engines?: number[];
   game_localizations?: number[];
   game_modes?: number[];
@@ -159,4 +159,14 @@ declare type Company = {
   updated_at: EpochTimeStamp;
   url: string;
   websites: number[];
+};
+
+declare type Franchise = {
+  checksum: string;
+  created_at: EpochTimeStamp;
+  games: number[];
+  name: string;
+  slug: string;
+  updated_at: EpochTimeStamp;
+  url: string;
 };

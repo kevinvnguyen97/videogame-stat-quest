@@ -22,6 +22,7 @@ export const GameInfo = () => {
   const [gameModes, setGameModes] = useState<GameMode[]>([]);
   const [screenshots, setScreenshots] = useState<Screenshot[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
+  const [franchise, setFranchise] = useState<Franchise>();
 
   useEffect(() => {
     const getGameInformation = async () => {
@@ -35,6 +36,7 @@ export const GameInfo = () => {
           gameModes,
           screenshots,
           companies,
+          franchise,
         } = await getGameInfo(parseInt(id));
 
         setGame(game);
@@ -45,6 +47,7 @@ export const GameInfo = () => {
         setGameModes(gameModes);
         setScreenshots(screenshots);
         setCompanies(companies);
+        setFranchise(franchise);
       }
     };
     getGameInformation();
@@ -73,6 +76,10 @@ export const GameInfo = () => {
                 {Math.round(game.total_rating)}% ({game.total_rating_count}{" "}
                 reviews)
               </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.ColumnHeader>Franchise</Table.ColumnHeader>
+              <Table.Cell>{franchise?.name}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.ColumnHeader>Companies</Table.ColumnHeader>

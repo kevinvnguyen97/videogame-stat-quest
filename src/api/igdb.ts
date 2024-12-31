@@ -10,6 +10,7 @@ export enum IGDBEndpoint {
   SCREENSHOTS = "screenshots",
   INVOLVED_COMPANIES = "involved_companies",
   COMPANIES = "companies",
+  FRANCHISES = "franchises",
 }
 
 export async function getIGDBRecords<T>(args: {
@@ -19,7 +20,7 @@ export async function getIGDBRecords<T>(args: {
 }): Promise<T[]> {
   const { endpoint, search, ids = [] } = args;
   const url = `${BASE_URL}/${endpoint}${
-    ids.length > 0 ? `/${ids.join(",")}` : ""
+    ids.length > 0 ? `/${ids.filter(Boolean).join(",")}` : ""
   }?fields=*${search ? `&search=${search}` : ""}`;
   const encodedUrl = encodeURI(url);
   const fetchRecords = await fetch(encodedUrl, {
@@ -50,6 +51,7 @@ export const getGameInfo = async (id: number) => {
     gameModes,
     screenshots,
     involvedCompanies,
+    franchises,
   ] = await Promise.all([
     getIGDBRecords<Cover>({
       endpoint: IGDBEndpoint.COVERS,
@@ -78,6 +80,10 @@ export const getGameInfo = async (id: number) => {
     getIGDBRecords<InvolvedCompany>({
       endpoint: IGDBEndpoint.INVOLVED_COMPANIES,
       ids: game.involved_companies,
+    }),
+    getIGDBRecords<Franchise>({
+      endpoint: IGDBEndpoint.FRANCHISES,
+      ids: [game.franchise],
     }),
   ]);
 
@@ -110,5 +116,6 @@ export const getGameInfo = async (id: number) => {
     gameModes,
     screenshots: hiResScreenshots,
     companies,
+    franchise: franchises[0],
   };
 };
