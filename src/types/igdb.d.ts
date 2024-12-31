@@ -15,12 +15,12 @@ declare type Game = {
   collection?: number;
   collections?: number[];
   cover: number;
-  created_at: string;
+  created_at: EpochTimeStamp;
   dlcs?: number[];
   expanded_games?: number[];
   expansions?: number[];
   external_games?: number[];
-  first_release_date: number;
+  first_release_date: EpochTimeStamp;
   follows?: number;
   forks?: number[];
   franchise?: number;
@@ -41,7 +41,7 @@ declare type Game = {
   ports?: number[];
   rating?: number;
   rating_count?: number;
-  release_dates: number[];
+  release_dates: EpochTimeStamp[];
   remakes?: number[];
   remasters?: number[];
   screenshots?: number[];
@@ -55,7 +55,7 @@ declare type Game = {
   themes?: number[];
   total_rating: number;
   total_rating_count: number;
-  updated_at?: number;
+  updated_at?: EpochTimeStamp;
   url?: string;
   version_parent?: number;
   version_title?: string;
@@ -79,14 +79,14 @@ declare type Platform = {
   alternative_name: string;
   category: string;
   checksum: string;
-  created_at: number;
+  created_at: EpochTimeStamp;
   generation: number;
   name: string;
   platform_family: number;
   platform_logo: number;
   slug: string;
   summary: string;
-  updated_at: number;
+  updated_at: EpochTimeStamp;
   url: string;
   versions: number[];
   websites: number[];
@@ -94,10 +94,10 @@ declare type Platform = {
 
 declare type Genre = {
   checksum?: string;
-  created_at: number;
+  created_at: EpochTimeStamp;
   name: string;
   slug: string;
-  updated_at: number;
+  updated_at: EpochTimeStamp;
   url: string;
 };
 
@@ -110,10 +110,10 @@ declare type GameVideo = {
 
 declare type GameMode = {
   checksum?: string;
-  created_at: number;
+  created_at: EpochTimeStamp;
   name: string;
   slug: string;
-  updated_at: number;
+  updated_at: EpochTimeStamp;
   url: string;
 };
 
@@ -126,4 +126,37 @@ declare type Screenshot = {
   image_id: string;
   url: string;
   width: number;
+};
+
+declare type InvolvedCompany = {
+  checksum: number;
+  company: number;
+  created_at: EpochTimestamp;
+  developer: boolean;
+  game: number;
+  porting: boolean;
+  publisher: boolean;
+  supporting: boolean;
+  updated_at: EpochTimestamp;
+};
+
+declare type Company = {
+  change_date: EpochTimeStamp;
+  change_date_category: number;
+  changed_company_id: number;
+  checksum: string;
+  country: number;
+  created_at: EpochTimeStamp;
+  description: string;
+  developed: number[];
+  logo: number;
+  name: string;
+  parent: number;
+  published: number[];
+  slug: string;
+  start_date: EpochTimeStamp;
+  start_date_category: number;
+  updated_at: EpochTimeStamp;
+  url: string;
+  websites: number[];
 };

@@ -8,6 +8,8 @@ export enum IGDBEndpoint {
   GAME_VIDEOS = "game_videos",
   GAME_MODES = "game_modes",
   SCREENSHOTS = "screenshots",
+  INVOLVED_COMPANIES = "involved_companies",
+  COMPANIES = "companies",
 }
 
 export async function getIGDBRecords<T>(args: {
@@ -40,33 +42,53 @@ export const getGameInfo = async (id: number) => {
     })
   )[0];
 
-  const [covers, platforms, genres, videos, gameModes, screenshots] =
-    await Promise.all([
-      getIGDBRecords<Cover>({
-        endpoint: IGDBEndpoint.COVERS,
-        ids: [game.cover],
-      }),
-      getIGDBRecords<Platform>({
-        endpoint: IGDBEndpoint.PLATFORMS,
-        ids: game.platforms,
-      }),
-      getIGDBRecords<Genre>({
-        endpoint: IGDBEndpoint.GENRES,
-        ids: game.genres,
-      }),
-      getIGDBRecords<GameVideo>({
-        endpoint: IGDBEndpoint.GAME_VIDEOS,
-        ids: game.videos,
-      }),
-      getIGDBRecords<GameMode>({
-        endpoint: IGDBEndpoint.GAME_MODES,
-        ids: game.game_modes,
-      }),
-      getIGDBRecords<Screenshot>({
-        endpoint: IGDBEndpoint.SCREENSHOTS,
-        ids: game.screenshots,
-      }),
-    ]);
+  const [
+    covers,
+    platforms,
+    genres,
+    videos,
+    gameModes,
+    screenshots,
+    involvedCompanies,
+  ] = await Promise.all([
+    getIGDBRecords<Cover>({
+      endpoint: IGDBEndpoint.COVERS,
+      ids: [game.cover],
+    }),
+    getIGDBRecords<Platform>({
+      endpoint: IGDBEndpoint.PLATFORMS,
+      ids: game.platforms,
+    }),
+    getIGDBRecords<Genre>({
+      endpoint: IGDBEndpoint.GENRES,
+      ids: game.genres,
+    }),
+    getIGDBRecords<GameVideo>({
+      endpoint: IGDBEndpoint.GAME_VIDEOS,
+      ids: game.videos,
+    }),
+    getIGDBRecords<GameMode>({
+      endpoint: IGDBEndpoint.GAME_MODES,
+      ids: game.game_modes,
+    }),
+    getIGDBRecords<Screenshot>({
+      endpoint: IGDBEndpoint.SCREENSHOTS,
+      ids: game.screenshots,
+    }),
+    getIGDBRecords<InvolvedCompany>({
+      endpoint: IGDBEndpoint.INVOLVED_COMPANIES,
+      ids: game.involved_companies,
+    }),
+  ]);
+
+  const companyIds = involvedCompanies.map(({ company }) => company);
+
+  const [companies] = await Promise.all([
+    getIGDBRecords<Company>({
+      endpoint: IGDBEndpoint.COMPANIES,
+      ids: companyIds,
+    }),
+  ]);
 
   const cover = covers[0];
   const hiResCover: Cover = {
@@ -87,5 +109,6 @@ export const getGameInfo = async (id: number) => {
     videos,
     gameModes,
     screenshots: hiResScreenshots,
+    companies,
   };
 };
