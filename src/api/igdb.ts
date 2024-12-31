@@ -7,6 +7,7 @@ export enum IGDBEndpoint {
   GENRES = "genres",
   GAME_VIDEOS = "game_videos",
   GAME_MODES = "game_modes",
+  ARTWORKS = "artworks",
 }
 
 export async function getIGDBRecords<T>(args: {
@@ -62,10 +63,32 @@ export const getGameInfo = async (id: number) => {
     }),
   ]);
 
+  // Wait one second to limit api to 4 per second
+  setTimeout(() => {}, 1000);
+
+  const [artworks] = await Promise.all([
+    getIGDBRecords<Artwork>({
+      endpoint: IGDBEndpoint.ARTWORKS,
+      ids: game.artworks,
+    }),
+  ]);
+
   const cover = covers[0];
   const hiResCover: Cover = {
     ...cover,
     url: cover.url.replace("t_thumb", "t_cover_big_2x"),
   };
-  return { game, cover: hiResCover, platforms, genres, videos, gameModes };
+  const hiResArtworks: Artwork[] = artworks.map((artwork) => ({
+    ...artwork,
+    url: artwork.url.replace("t_thumb", "t_cover_big_2x"),
+  }));
+  return {
+    game,
+    cover: hiResCover,
+    platforms,
+    genres,
+    videos,
+    gameModes,
+    artworks: hiResArtworks,
+  };
 };

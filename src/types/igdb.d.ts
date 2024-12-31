@@ -116,3 +116,14 @@ declare type GameMode = {
   updated_at: number;
   url: string;
 };
+
+declare type Artwork = {
+  alpha_channel: boolean;
+  animated: boolean;
+  checksum: string;
+  game: number;
+  height: number;
+  image_id: string;
+  url: string;
+  width: number;
+};

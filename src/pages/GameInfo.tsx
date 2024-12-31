@@ -20,11 +20,12 @@ export const GameInfo = () => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [videos, setVideos] = useState<GameVideo[]>([]);
   const [gameModes, setGameModes] = useState<GameMode[]>([]);
+  const [artworks, setArtworks] = useState<Artwork[]>([]);
 
   useEffect(() => {
     const getGameInformation = async () => {
       if (id) {
-        const { game, cover, platforms, genres, videos, gameModes } =
+        const { game, cover, platforms, genres, videos, gameModes, artworks } =
           await getGameInfo(parseInt(id));
         setGame(game);
         setCover(cover);
@@ -32,6 +33,7 @@ export const GameInfo = () => {
         setGenres(genres);
         setVideos(videos);
         setGameModes(gameModes);
+        setArtworks(artworks);
       }
     };
     getGameInformation();
@@ -99,6 +101,16 @@ export const GameInfo = () => {
                   width={400}
                   height={225}
                 />
+              ))}
+            </HStack>
+          </AccordionItemContent>
+        </AccordionItem>
+        <AccordionItem value="1">
+          <AccordionItemTrigger>Artworks</AccordionItemTrigger>
+          <AccordionItemContent>
+            <HStack gap={5} overflowX="scroll">
+              {artworks.map(({ url }) => (
+                <Image src={url} width="auto" height={250} />
               ))}
             </HStack>
           </AccordionItemContent>
