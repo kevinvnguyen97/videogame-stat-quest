@@ -23,7 +23,7 @@ export async function getIGDBRecords<T>(args: {
     ids.length > 0 ? `/${ids.filter(Boolean).join(",")}` : ""
   }?fields=*${search ? `&search=${search}` : ""}`;
   const encodedUrl = encodeURI(url);
-  const fetchRecords = await fetch(encodedUrl, {
+  const response = await fetch(encodedUrl, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -31,7 +31,7 @@ export async function getIGDBRecords<T>(args: {
       Authorization: `Bearer ${import.meta.env.VITE_IGDB_ACCESS_TOKEN}`,
     },
   });
-  const records = (await fetchRecords.json()) as T[];
+  const records = (await response.json()) as T[];
   return records;
 }
 
