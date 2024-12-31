@@ -7,7 +7,7 @@ export enum IGDBEndpoint {
   GENRES = "genres",
   GAME_VIDEOS = "game_videos",
   GAME_MODES = "game_modes",
-  ARTWORKS = "artworks",
+  SCREENSHOTS = "screenshots",
 }
 
 export async function getIGDBRecords<T>(args: {
@@ -66,10 +66,10 @@ export const getGameInfo = async (id: number) => {
   // Wait one second to limit api to 4 per second
   setTimeout(() => {}, 1000);
 
-  const [artworks] = await Promise.all([
-    getIGDBRecords<Artwork>({
-      endpoint: IGDBEndpoint.ARTWORKS,
-      ids: game.artworks,
+  const [screenshots] = await Promise.all([
+    getIGDBRecords<Screenshot>({
+      endpoint: IGDBEndpoint.SCREENSHOTS,
+      ids: game.screenshots,
     }),
   ]);
 
@@ -78,10 +78,12 @@ export const getGameInfo = async (id: number) => {
     ...cover,
     url: cover.url.replace("t_thumb", "t_cover_big_2x"),
   };
-  const hiResArtworks: Artwork[] = artworks.map((artwork) => ({
-    ...artwork,
-    url: artwork.url.replace("t_thumb", "t_cover_big_2x"),
+
+  const hiResScreenshots: Screenshot[] = screenshots.map((screenshot) => ({
+    ...screenshot,
+    url: `//images.igdb.com/igdb/image/upload/t_screenshot_big/${screenshot.image_id}.jpg`,
   }));
+
   return {
     game,
     cover: hiResCover,
@@ -89,6 +91,6 @@ export const getGameInfo = async (id: number) => {
     genres,
     videos,
     gameModes,
-    artworks: hiResArtworks,
+    screenshots: hiResScreenshots,
   };
 };

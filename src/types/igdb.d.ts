@@ -117,7 +117,7 @@ declare type GameMode = {
   url: string;
 };
 
-declare type Artwork = {
+declare type Screenshot = {
   alpha_channel: boolean;
   animated: boolean;
   checksum: string;

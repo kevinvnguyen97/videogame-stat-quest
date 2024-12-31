@@ -1,4 +1,4 @@
-import { getGameInfo, getIGDBRecords, IGDBEndpoint } from "@api/igdb";
+import { getGameInfo } from "@api/igdb";
 import { Box, Text, Image, HStack, Table, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -20,20 +20,30 @@ export const GameInfo = () => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [videos, setVideos] = useState<GameVideo[]>([]);
   const [gameModes, setGameModes] = useState<GameMode[]>([]);
-  const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const [screenshots, setScreenshots] = useState<Screenshot[]>([]);
 
   useEffect(() => {
     const getGameInformation = async () => {
       if (id) {
-        const { game, cover, platforms, genres, videos, gameModes, artworks } =
-          await getGameInfo(parseInt(id));
+        const {
+          game,
+          cover,
+          platforms,
+          genres,
+          videos,
+          gameModes,
+          screenshots,
+        } = await getGameInfo(parseInt(id));
+
         setGame(game);
         setCover(cover);
         setPlatforms(platforms);
         setGenres(genres);
         setVideos(videos);
         setGameModes(gameModes);
-        setArtworks(artworks);
+        setScreenshots(screenshots);
+
+        console.log(screenshots);
       }
     };
     getGameInformation();
@@ -51,41 +61,43 @@ export const GameInfo = () => {
       <HStack justifyContent="center" alignItems="start" gap={5}>
         <Image src={cover.url} width={350} height="auto" />
         <Table.Root width={350}>
-          <Table.Row>
-            <Table.ColumnHeader>Release Date</Table.ColumnHeader>
-            <Table.Cell>{formatIGDBDate(game.first_release_date)}</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.ColumnHeader>Rating</Table.ColumnHeader>
-            <Table.Cell>
-              {Math.round(game.total_rating)}% ({game.total_rating_count}{" "}
-              reviews)
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.ColumnHeader>Platforms</Table.ColumnHeader>
-            <Table.Cell>
-              {platforms.map(({ name }) => (
-                <Box>{name}</Box>
-              ))}
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.ColumnHeader>Genres</Table.ColumnHeader>
-            <Table.Cell>
-              {genres.map(({ name }) => (
-                <Box>{name}</Box>
-              ))}
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.ColumnHeader>Game Modes</Table.ColumnHeader>
-            <Table.Cell>
-              {gameModes.map(({ name }) => (
-                <Box>{name}</Box>
-              ))}
-            </Table.Cell>
-          </Table.Row>
+          <Table.Body>
+            <Table.Row>
+              <Table.ColumnHeader>Release Date</Table.ColumnHeader>
+              <Table.Cell>{formatIGDBDate(game.first_release_date)}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.ColumnHeader>Rating</Table.ColumnHeader>
+              <Table.Cell>
+                {Math.round(game.total_rating)}% ({game.total_rating_count}{" "}
+                reviews)
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.ColumnHeader>Platforms</Table.ColumnHeader>
+              <Table.Cell>
+                {platforms.map(({ slug, name }) => (
+                  <Box key={slug}>{name}</Box>
+                ))}
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.ColumnHeader>Genres</Table.ColumnHeader>
+              <Table.Cell>
+                {genres.map(({ slug, name }) => (
+                  <Box key={slug}>{name}</Box>
+                ))}
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.ColumnHeader>Game Modes</Table.ColumnHeader>
+              <Table.Cell>
+                {gameModes.map(({ slug, name }) => (
+                  <Box key={slug}>{name}</Box>
+                ))}
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
         </Table.Root>
         <Text maxWidth={500}>{game.summary}</Text>
       </HStack>
@@ -109,8 +121,8 @@ export const GameInfo = () => {
           <AccordionItemTrigger>Artworks</AccordionItemTrigger>
           <AccordionItemContent>
             <HStack gap={5} overflowX="scroll">
-              {artworks.map(({ url }) => (
-                <Image src={url} width="auto" height={250} />
+              {screenshots.map(({ image_id, url }) => (
+                <Image key={image_id} src={url} width="auto" height={250} />
               ))}
             </HStack>
           </AccordionItemContent>

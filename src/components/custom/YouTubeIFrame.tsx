@@ -16,7 +16,6 @@ export const YouTubeIFrame = (props: YouTubeIFrameProps) => {
         height={height}
         src={`https://www.youtube.com/embed/${videoId}`}
         allowFullScreen
-        allowTransparency
       />
     </Box>
   );

@@ -4,6 +4,7 @@ import { APP_NAME } from "@constants/appName";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getIGDBRecords, IGDBEndpoint } from "@api/igdb";
+import { DateTime } from "luxon";
 
 export const Results = () => {
   const { searchText } = useParams();
@@ -51,22 +52,25 @@ export const Results = () => {
           <Card.Header fontWeight="bold">Options</Card.Header>
         </Card.Root>
         <VStack mdTo2xl={{ width: "2/3" }}>
-          {games.map((game) => {
-            const cover = covers.find((cover) => cover.game === game.id);
+          {games.map(({ id, name, summary, first_release_date }) => {
+            const cover = covers.find(({ game }) => game === id);
             return (
               <Card.Root
-                key={game.id}
+                key={id}
                 variant="subtle"
                 width="100%"
                 flexDirection="row"
                 _hover={{ cursor: "pointer" }}
                 alignItems="start"
-                onClick={() => navigate(`/game/${game.id}`)}
+                onClick={() => navigate(`/game/${id}`)}
               >
                 <Image src={cover?.url} fit="contain" />
                 <VStack alignItems="start">
-                  <Card.Header fontWeight="bold">{game.name}</Card.Header>
-                  <Card.Body>{game.summary}</Card.Body>
+                  <Card.Header fontWeight="bold">
+                    {name} (
+                    {DateTime.fromMillis(first_release_date * 1000).year})
+                  </Card.Header>
+                  <Card.Body>{summary}</Card.Body>
                 </VStack>
               </Card.Root>
             );
