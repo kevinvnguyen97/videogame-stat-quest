@@ -42,8 +42,6 @@ export const GameInfo = () => {
         setVideos(videos);
         setGameModes(gameModes);
         setScreenshots(screenshots);
-
-        console.log(screenshots);
       }
     };
     getGameInformation();
@@ -118,7 +116,7 @@ export const GameInfo = () => {
           </AccordionItemContent>
         </AccordionItem>
         <AccordionItem value="1">
-          <AccordionItemTrigger>Artworks</AccordionItemTrigger>
+          <AccordionItemTrigger>Screenshots</AccordionItemTrigger>
           <AccordionItemContent>
             <HStack gap={5} overflowX="scroll">
               {screenshots.map(({ image_id, url }) => (
