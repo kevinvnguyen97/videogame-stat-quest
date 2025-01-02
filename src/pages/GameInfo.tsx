@@ -1,7 +1,7 @@
 import { useGameData } from "@api/igdb";
 import { Box, Text, Image, HStack, Table, VStack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { convertRatingPercentageToStars, formatIGDBDate } from "@utils/index";
+import { formatIGDBDate } from "@utils/index";
 import { YouTubeIFrame } from "@components/custom/YouTubeIFrame";
 import {
   AccordionItem,
@@ -25,10 +25,8 @@ export const GameInfo = () => {
     screenshots = [],
     companies = [],
     franchises = [],
+    // dlcs = [],
   } = useGameData(parseInt(id ?? ""));
-
-  const { numberOfFullStars, isHalfStarPresent, numberOfEmptyStars } =
-    convertRatingPercentageToStars(game?.total_rating ?? 0);
 
   if (!game || !cover) {
     return <Loading />;
@@ -128,6 +126,10 @@ export const GameInfo = () => {
               ))}
             </HStack>
           </AccordionItemContent>
+        </AccordionItem>
+        <AccordionItem value="2">
+          <AccordionItemTrigger>DLCs</AccordionItemTrigger>
+          <AccordionItemContent></AccordionItemContent>
         </AccordionItem>
       </AccordionRoot>
     </VStack>

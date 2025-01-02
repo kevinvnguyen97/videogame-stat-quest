@@ -61,6 +61,7 @@ export const useGameData = (id: number) => {
   const [screenshots, setScreenshots] = useState<Screenshot[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [franchises, setFranchises] = useState<Franchise[]>();
+  const [dlcs, setDlcs] = useState<Game[]>();
 
   useEffect(() => {
     console.time("fetch game");
@@ -81,6 +82,7 @@ export const useGameData = (id: number) => {
         fetchedScreenshots = [],
         fetchedInvolvedCompanies = [],
         fetchedFranchises = [],
+        fetchedDLCs = [],
       ] = await Promise.all([
         getIGDBRecords<Cover>({
           endpoint: IGDBEndpoint.COVERS,
@@ -113,6 +115,10 @@ export const useGameData = (id: number) => {
         getIGDBRecords<Franchise>({
           endpoint: IGDBEndpoint.FRANCHISES,
           ids: fetchedGame.franchises,
+        }),
+        getIGDBRecords<Game>({
+          endpoint: IGDBEndpoint.GAMES,
+          ids: fetchedGame.dlcs,
         }),
       ]);
 
@@ -149,6 +155,7 @@ export const useGameData = (id: number) => {
       setScreenshots(hiResScreenshots);
       setCompanies(fetchedCompanies);
       setFranchises(fetchedFranchises);
+      setDlcs(fetchedDLCs);
     };
 
     fetchGameData();
@@ -165,5 +172,6 @@ export const useGameData = (id: number) => {
     screenshots,
     companies,
     franchises,
+    dlcs,
   };
 };
