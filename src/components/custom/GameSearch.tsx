@@ -25,6 +25,7 @@ export const GameSearch = () => {
         size="xl"
         colorPalette="blue"
         onClick={() => navigate(`/search/${input}`)}
+        disabled={!input}
       >
         <AiOutlineSearch />
       </IconButton>

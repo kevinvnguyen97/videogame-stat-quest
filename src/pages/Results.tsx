@@ -5,6 +5,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getIGDBRecords, IGDBEndpoint } from "@api/igdb";
 import { DateTime } from "luxon";
+import { Loading } from "@pages/Loading";
 
 export const Results = () => {
   const { searchText } = useParams();
@@ -37,6 +38,8 @@ export const Results = () => {
       setCovers(hiResCovers);
     };
     if (searchText) {
+      setGames([]);
+      setCovers([]);
       searchForGame(searchText);
     }
   }, [searchText]);
@@ -47,36 +50,40 @@ export const Results = () => {
         Search Results for "{searchText}"
       </Text>
       <GameSearch />
-      <HStack alignItems="start">
-        <Card.Root variant="subtle" mdTo2xl={{ width: "1/3" }}>
-          <Card.Header fontWeight="bold">Options</Card.Header>
-        </Card.Root>
-        <VStack mdTo2xl={{ width: "2/3" }}>
-          {games.map(({ id, name, summary, first_release_date }) => {
-            const cover = covers.find(({ game }) => game === id);
-            return (
-              <Card.Root
-                key={id}
-                variant="subtle"
-                width="100%"
-                flexDirection="row"
-                _hover={{ cursor: "pointer" }}
-                alignItems="start"
-                onClick={() => navigate(`/game/${id}`)}
-              >
-                <Image src={cover?.url} fit="contain" />
-                <VStack alignItems="start">
-                  <Card.Header fontWeight="bold">
-                    {name} (
-                    {DateTime.fromMillis(first_release_date * 1000).year})
-                  </Card.Header>
-                  <Card.Body>{summary}</Card.Body>
-                </VStack>
-              </Card.Root>
-            );
-          })}
-        </VStack>
-      </HStack>
+      {games.length > 0 && searchText ? (
+        <HStack alignItems="start">
+          <Card.Root variant="subtle" mdTo2xl={{ width: "1/3" }}>
+            <Card.Header fontWeight="bold">Options</Card.Header>
+          </Card.Root>
+          <VStack mdTo2xl={{ width: "2/3" }}>
+            {games.map(({ id, name, summary, first_release_date }) => {
+              const cover = covers.find(({ game }) => game === id);
+              return (
+                <Card.Root
+                  key={id}
+                  variant="subtle"
+                  width="100%"
+                  flexDirection="row"
+                  _hover={{ cursor: "pointer" }}
+                  alignItems="start"
+                  onClick={() => navigate(`/game/${id}`)}
+                >
+                  <Image src={cover?.url} fit="contain" />
+                  <VStack alignItems="start">
+                    <Card.Header fontWeight="bold">
+                      {name} (
+                      {DateTime.fromMillis(first_release_date * 1000).year})
+                    </Card.Header>
+                    <Card.Body>{summary}</Card.Body>
+                  </VStack>
+                </Card.Root>
+              );
+            })}
+          </VStack>
+        </HStack>
+      ) : (
+        <Loading />
+      )}
     </Box>
   );
 };
