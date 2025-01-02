@@ -9,7 +9,13 @@ export const Home = () => {
   }, []);
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      animationDuration="slow"
+      animationStyle="scale-fade-in"
+    >
       <Text textAlign="center" fontSize="4xl">
         {APP_NAME}
       </Text>

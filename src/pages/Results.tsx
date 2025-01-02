@@ -45,13 +45,24 @@ export const Results = () => {
   }, [searchText]);
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" gap={5}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      gap={5}
+      animationDuration="slow"
+      animationStyle="scale-fade-in"
+    >
       <Text textAlign="center" fontSize="4xl">
         Search Results for "{searchText}"
       </Text>
       <GameSearch />
       {games.length > 0 && searchText ? (
-        <HStack alignItems="start">
+        <HStack
+          alignItems="start"
+          animationDuration="slow"
+          animationStyle="scale-fade-in"
+        >
           <Card.Root variant="subtle" mdTo2xl={{ width: "1/3" }}>
             <Card.Header fontWeight="bold">Options</Card.Header>
           </Card.Root>

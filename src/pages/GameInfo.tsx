@@ -31,7 +31,7 @@ export const GameInfo = () => {
   }
 
   return (
-    <VStack gap={5}>
+    <VStack gap={5} animationDuration="slow" animationStyle="scale-fade-in">
       <Text textAlign="center" fontSize="4xl">
         {game?.name}
       </Text>
