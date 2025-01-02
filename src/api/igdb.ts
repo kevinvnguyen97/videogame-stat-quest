@@ -60,9 +60,10 @@ export const useGameData = (id: number) => {
   const [gameModes, setGameModes] = useState<GameMode[]>([]);
   const [screenshots, setScreenshots] = useState<Screenshot[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
-  const [franchise, setFranchise] = useState<Franchise>();
+  const [franchises, setFranchises] = useState<Franchise[]>();
 
   useEffect(() => {
+    console.time("fetch game");
     const fetchGameData = async () => {
       const fetchedGame = (
         await getIGDBRecords<Game>({
@@ -111,7 +112,7 @@ export const useGameData = (id: number) => {
         }),
         getIGDBRecords<Franchise>({
           endpoint: IGDBEndpoint.FRANCHISES,
-          ids: [fetchedGame.franchise],
+          ids: fetchedGame.franchises,
         }),
       ]);
 
@@ -147,10 +148,11 @@ export const useGameData = (id: number) => {
       setGameModes(fetchedGameModes);
       setScreenshots(hiResScreenshots);
       setCompanies(fetchedCompanies);
-      setFranchise(fetchedFranchises[0]);
+      setFranchises(fetchedFranchises);
     };
 
     fetchGameData();
+    console.timeEnd("fetch game");
   }, [id]);
 
   return {
@@ -162,6 +164,6 @@ export const useGameData = (id: number) => {
     gameModes,
     screenshots,
     companies,
-    franchise,
+    franchises,
   };
 };

@@ -23,7 +23,7 @@ export const GameInfo = () => {
     gameModes = [],
     screenshots = [],
     companies = [],
-    franchise,
+    franchises = [],
   } = useGameData(parseInt(id ?? ""));
 
   if (!game || !cover) {
@@ -54,7 +54,11 @@ export const GameInfo = () => {
             </Table.Row>
             <Table.Row>
               <Table.ColumnHeader>Franchise</Table.ColumnHeader>
-              <Table.Cell>{franchise?.name}</Table.Cell>
+              <Table.Cell>
+                {franchises.map(({ slug, name }) => (
+                  <Box key={slug}>{name}</Box>
+                ))}
+              </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.ColumnHeader>Companies</Table.ColumnHeader>
