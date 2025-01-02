@@ -1,7 +1,7 @@
 import { useGameData } from "@api/igdb";
 import { Box, Text, Image, HStack, Table, VStack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { formatIGDBDate } from "@utils/index";
+import { convertRatingPercentageToStars, formatIGDBDate } from "@utils/index";
 import { YouTubeIFrame } from "@components/custom/YouTubeIFrame";
 import {
   AccordionItem,
@@ -10,6 +10,7 @@ import {
   AccordionRoot,
 } from "@components/ui/accordion";
 import { Loading } from "@pages/Loading";
+import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
 
 export const GameInfo = () => {
   const { id } = useParams();
@@ -25,6 +26,9 @@ export const GameInfo = () => {
     companies = [],
     franchises = [],
   } = useGameData(parseInt(id ?? ""));
+
+  const { numberOfFullStars, isHalfStarPresent, numberOfEmptyStars } =
+    convertRatingPercentageToStars(game?.total_rating ?? 0);
 
   if (!game || !cover) {
     return <Loading />;
@@ -48,6 +52,15 @@ export const GameInfo = () => {
             <Table.Row>
               <Table.ColumnHeader>Rating</Table.ColumnHeader>
               <Table.Cell>
+                <HStack>
+                  {numberOfFullStars > 0
+                    ? [...Array(numberOfFullStars)].map(() => <BsStarFill />)
+                    : undefined}
+                  {isHalfStarPresent ? <BsStarHalf /> : undefined}
+                  {numberOfEmptyStars > 0
+                    ? [...Array(numberOfEmptyStars)].map(() => <BsStar />)
+                    : undefined}
+                </HStack>
                 {Math.round(game?.total_rating ?? 0)}% (
                 {game?.total_rating_count ?? 0} reviews)
               </Table.Cell>
