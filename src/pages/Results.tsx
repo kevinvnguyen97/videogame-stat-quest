@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getIGDBRecords, IGDBEndpoint } from "@api/igdb";
 import { DateTime } from "luxon";
 import { Loading } from "@pages/Loading";
+import { StarRating } from "@components/custom/StarRating";
 
 export const Results = () => {
   const { searchText } = useParams();
@@ -67,29 +68,47 @@ export const Results = () => {
             <Card.Header fontWeight="bold">Options</Card.Header>
           </Card.Root>
           <VStack mdTo2xl={{ width: "2/3" }}>
-            {games.map(({ id, name, summary, first_release_date }) => {
-              const cover = covers.find(({ game }) => game === id);
-              return (
-                <Card.Root
-                  key={id}
-                  variant="subtle"
-                  width="100%"
-                  flexDirection="row"
-                  _hover={{ cursor: "pointer" }}
-                  alignItems="start"
-                  onClick={() => navigate(`/game/${id}`)}
-                >
-                  <Image src={cover?.url} fit="contain" />
-                  <VStack alignItems="start">
-                    <Card.Header fontWeight="bold">
-                      {name} (
-                      {DateTime.fromMillis(first_release_date * 1000).year})
-                    </Card.Header>
-                    <Card.Body>{summary}</Card.Body>
-                  </VStack>
-                </Card.Root>
-              );
-            })}
+            {games.map(
+              ({
+                id,
+                name,
+                summary,
+                first_release_date,
+                total_rating,
+                total_rating_count,
+              }) => {
+                const cover = covers.find(({ game }) => game === id);
+                return (
+                  <Card.Root
+                    key={id}
+                    variant="subtle"
+                    width="100%"
+                    flexDirection="row"
+                    _hover={{ cursor: "pointer" }}
+                    alignItems="start"
+                    onClick={() => navigate(`/game/${id}`)}
+                  >
+                    <Image src={cover?.url} fit="contain" height={300} />
+                    <VStack alignItems="start">
+                      <Card.Header fontWeight="bold">
+                        {name} (
+                        {DateTime.fromMillis(first_release_date * 1000).year})
+                      </Card.Header>
+                      {total_rating_count > 0 && (
+                        <Card.Body>
+                          <StarRating rating={total_rating} />{" "}
+                          {Math.round(total_rating)}% ({total_rating_count}{" "}
+                          reviews)
+                        </Card.Body>
+                      )}
+                      <Card.Body>
+                        <Text lineClamp={4}>{summary}</Text>
+                      </Card.Body>
+                    </VStack>
+                  </Card.Root>
+                );
+              }
+            )}
           </VStack>
         </HStack>
       ) : (
