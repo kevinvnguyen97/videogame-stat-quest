@@ -22,5 +22,5 @@ export const convertRatingPercentageToStars = (ratingPercentage: number) => {
 };
 
 export const getIGDBHiResCover = (url: string) => {
-  return url.replace("t_thumb", "t_cover_big_2x");
+  return url?.replace("t_thumb", "t_cover_big_2x");
 };

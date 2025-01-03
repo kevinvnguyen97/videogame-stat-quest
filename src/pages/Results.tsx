@@ -31,7 +31,7 @@ export const Results = () => {
       });
       const hiResCovers = coversForGame.map((cover) => ({
         ...cover,
-        url: getIGDBHiResCover(cover.url),
+        url: getIGDBHiResCover(cover?.url),
       }));
 
       setGames(uniqueGames);

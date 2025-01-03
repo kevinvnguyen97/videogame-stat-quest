@@ -28,6 +28,8 @@ export const GameInfo = () => {
     franchises = [],
     dlcs = [],
     dlcCovers = [],
+    parentGame,
+    parentGameCover,
     isGameDataLoading,
   } = useGameData(parseInt(id ?? ""));
 
@@ -53,8 +55,8 @@ export const GameInfo = () => {
             <Table.Row>
               <Table.ColumnHeader>Rating</Table.ColumnHeader>
               <Table.Cell>
-                <StarRating rating={game?.total_rating} />
-                {game?.total_rating_count > 0
+                <StarRating rating={game?.total_rating ?? 0} />
+                {game?.total_rating_count ?? 0 > 0
                   ? `${Math.round(game?.total_rating ?? 0)}%`
                   : "N/A"}{" "}
                 ({game?.total_rating_count ?? 0} reviews)
@@ -148,6 +150,18 @@ export const GameInfo = () => {
                   );
                 })}
               </HStack>
+            </AccordionItemContent>
+          </AccordionItem>
+        )}
+        {parentGame && (
+          <AccordionItem value="3">
+            <AccordionItemTrigger>Parent Game</AccordionItemTrigger>
+            <AccordionItemContent>
+              <GameCard
+                game={parentGame}
+                coverUrl={parentGameCover?.url}
+                width={600}
+              />
             </AccordionItemContent>
           </AccordionItem>
         )}
