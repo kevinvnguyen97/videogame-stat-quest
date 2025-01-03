@@ -69,7 +69,7 @@ export const Results = () => {
           <VStack mdTo2xl={{ width: "2/3" }}>
             {games.map((game) => {
               const cover = covers.find((cover) => cover.game === game.id);
-              return <GameCard game={game} coverUrl={cover?.url} />;
+              return <GameCard key={game.id} game={game} coverUrl={cover?.url} />;
             })}
           </VStack>
         </HStack>

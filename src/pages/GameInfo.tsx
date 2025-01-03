@@ -65,40 +65,40 @@ export const GameInfo = () => {
             <Table.Row>
               <Table.ColumnHeader>Franchise</Table.ColumnHeader>
               <Table.Cell>
-                {franchises.map(({ slug, name }) => (
-                  <Box key={slug}>{name}</Box>
+                {franchises.map(({ id, name }) => (
+                  <Box key={id}>{name}</Box>
                 ))}
               </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.ColumnHeader>Companies</Table.ColumnHeader>
               <Table.Cell>
-                {companies?.map(({ slug, name }) => (
-                  <Box key={slug}>{name}</Box>
+                {companies?.map(({ id, name }) => (
+                  <Box key={id}>{name}</Box>
                 ))}
               </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.ColumnHeader>Platforms</Table.ColumnHeader>
               <Table.Cell>
-                {platforms?.map(({ slug, name }) => (
-                  <Box key={slug}>{name}</Box>
+                {platforms?.map(({ id, name }) => (
+                  <Box key={id}>{name}</Box>
                 ))}
               </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.ColumnHeader>Genres</Table.ColumnHeader>
               <Table.Cell>
-                {genres?.map(({ slug, name }) => (
-                  <Box key={slug}>{name}</Box>
+                {genres?.map(({ id, name }) => (
+                  <Box key={id}>{name}</Box>
                 ))}
               </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.ColumnHeader>Game Modes</Table.ColumnHeader>
               <Table.Cell>
-                {gameModes?.map(({ slug, name }) => (
-                  <Box key={slug}>{name}</Box>
+                {gameModes?.map(({ id, name }) => (
+                  <Box key={id}>{name}</Box>
                 ))}
               </Table.Cell>
             </Table.Row>
@@ -111,9 +111,9 @@ export const GameInfo = () => {
           <AccordionItemTrigger>Videos</AccordionItemTrigger>
           <AccordionItemContent>
             <HStack gap={5} overflowX="scroll">
-              {videos?.map(({ video_id }) => (
+              {videos?.map(({ id, video_id }) => (
                 <YouTubeIFrame
-                  key={video_id}
+                  key={id}
                   videoId={video_id}
                   width={400}
                   height={225}
@@ -126,8 +126,8 @@ export const GameInfo = () => {
           <AccordionItemTrigger>Screenshots</AccordionItemTrigger>
           <AccordionItemContent>
             <HStack gap={5} overflowX="scroll">
-              {screenshots?.map(({ image_id, url }) => (
-                <Image key={image_id} src={url} width="auto" height={250} />
+              {screenshots?.map(({ id, url }) => (
+                <Image key={id} src={url} width="auto" height={250} />
               ))}
             </HStack>
           </AccordionItemContent>

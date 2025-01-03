@@ -75,6 +75,7 @@ declare type Cover = {
 };
 
 declare type Platform = {
+  id: number;
   abbreviation: string;
   alternative_name: string;
   category: string;
@@ -93,6 +94,7 @@ declare type Platform = {
 };
 
 declare type Genre = {
+  id: number;
   checksum?: string;
   created_at: EpochTimeStamp;
   name: string;
@@ -102,6 +104,7 @@ declare type Genre = {
 };
 
 declare type GameVideo = {
+  id: number;
   checksum?: string;
   game: number;
   name: string;
@@ -109,6 +112,7 @@ declare type GameVideo = {
 };
 
 declare type GameMode = {
+  id: number;
   checksum?: string;
   created_at: EpochTimeStamp;
   name: string;
@@ -118,6 +122,7 @@ declare type GameMode = {
 };
 
 declare type Screenshot = {
+  id: number;
   alpha_channel: boolean;
   animated: boolean;
   checksum: string;
@@ -129,6 +134,7 @@ declare type Screenshot = {
 };
 
 declare type InvolvedCompany = {
+  id: number;
   checksum: number;
   company: number;
   created_at: EpochTimestamp;
@@ -141,6 +147,7 @@ declare type InvolvedCompany = {
 };
 
 declare type Company = {
+  id: number;
   change_date: EpochTimeStamp;
   change_date_category: number;
   changed_company_id: number;
@@ -162,6 +169,7 @@ declare type Company = {
 };
 
 declare type Franchise = {
+  id: number;
   checksum: string;
   created_at: EpochTimeStamp;
   games: number[];
