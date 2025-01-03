@@ -11,11 +11,11 @@ export const StarRating = (props: { rating: number }) => {
   return (
     <HStack>
       {numberOfFullStars > 0
-        ? [...Array(numberOfFullStars)].map(() => <BsStarFill />)
+        ? [...Array(numberOfFullStars)].map((_, i) => <BsStarFill key={i} />)
         : undefined}
       {isHalfStarPresent ? <BsStarHalf /> : undefined}
       {numberOfEmptyStars > 0
-        ? [...Array(numberOfEmptyStars)].map(() => <BsStar />)
+        ? [...Array(numberOfEmptyStars)].map((_, i) => <BsStar key={i} />)
         : undefined}
     </HStack>
   );

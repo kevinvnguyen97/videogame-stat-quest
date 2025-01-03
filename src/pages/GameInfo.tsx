@@ -1,7 +1,7 @@
 import { useGameData } from "@api/igdb";
-import { Box, Text, Image, HStack, Table, VStack } from "@chakra-ui/react";
+import { Text, Image, HStack, VStack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { formatIGDBDate, getIGDBHiResCover } from "@utils/index";
+import { getIGDBHiResCover } from "@utils/index";
 import { YouTubeIFrame } from "@components/custom/YouTubeIFrame";
 import {
   AccordionItem,
@@ -10,8 +10,8 @@ import {
   AccordionRoot,
 } from "@components/ui/accordion";
 import { Loading } from "@pages/Loading";
-import { StarRating } from "@components/custom/StarRating";
 import { GameCard } from "@components/custom/GameCard";
+import { GameInfoTable } from "@components/custom/GameInfoTable";
 
 export const GameInfo = () => {
   const { id } = useParams();
@@ -44,66 +44,14 @@ export const GameInfo = () => {
       </Text>
       <HStack justifyContent="center" alignItems="start" gap={5}>
         <Image src={cover?.url} width={350} height="auto" />
-        <Table.Root width={350}>
-          <Table.Body>
-            <Table.Row>
-              <Table.ColumnHeader>Release Date</Table.ColumnHeader>
-              <Table.Cell>
-                {formatIGDBDate(game?.first_release_date ?? 0)}
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.ColumnHeader>Rating</Table.ColumnHeader>
-              <Table.Cell>
-                <StarRating rating={game?.total_rating ?? 0} />
-                {game?.total_rating_count ?? 0 > 0
-                  ? `${Math.round(game?.total_rating ?? 0)}%`
-                  : "N/A"}{" "}
-                ({game?.total_rating_count ?? 0} reviews)
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.ColumnHeader>Franchise</Table.ColumnHeader>
-              <Table.Cell>
-                {franchises.map(({ id, name }) => (
-                  <Box key={id}>{name}</Box>
-                ))}
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.ColumnHeader>Companies</Table.ColumnHeader>
-              <Table.Cell>
-                {companies?.map(({ id, name }) => (
-                  <Box key={id}>{name}</Box>
-                ))}
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.ColumnHeader>Platforms</Table.ColumnHeader>
-              <Table.Cell>
-                {platforms?.map(({ id, name }) => (
-                  <Box key={id}>{name}</Box>
-                ))}
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.ColumnHeader>Genres</Table.ColumnHeader>
-              <Table.Cell>
-                {genres?.map(({ id, name }) => (
-                  <Box key={id}>{name}</Box>
-                ))}
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.ColumnHeader>Game Modes</Table.ColumnHeader>
-              <Table.Cell>
-                {gameModes?.map(({ id, name }) => (
-                  <Box key={id}>{name}</Box>
-                ))}
-              </Table.Cell>
-            </Table.Row>
-          </Table.Body>
-        </Table.Root>
+        <GameInfoTable
+          game={game}
+          franchises={franchises}
+          companies={companies}
+          platforms={platforms}
+          genres={genres}
+          gameModes={gameModes}
+        />
         <Text maxWidth={500}>{game?.summary}</Text>
       </HStack>
       <AccordionRoot collapsible size="lg">
@@ -146,7 +94,12 @@ export const GameInfo = () => {
                   }
                   const hiResCoverUrl = getIGDBHiResCover(cover?.url);
                   return (
-                    <GameCard game={dlc} coverUrl={hiResCoverUrl} width={600} />
+                    <GameCard
+                      key={dlc.id}
+                      game={dlc}
+                      coverUrl={hiResCoverUrl}
+                      width={600}
+                    />
                   );
                 })}
               </HStack>
