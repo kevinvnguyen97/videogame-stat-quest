@@ -1,7 +1,7 @@
 import { useGameData } from "@api/igdb";
 import { Box, Text, Image, HStack, Table, VStack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { formatIGDBDate } from "@utils/index";
+import { formatIGDBDate, getIGDBHiResCover } from "@utils/index";
 import { YouTubeIFrame } from "@components/custom/YouTubeIFrame";
 import {
   AccordionItem,
@@ -11,6 +11,7 @@ import {
 } from "@components/ui/accordion";
 import { Loading } from "@pages/Loading";
 import { StarRating } from "@components/custom/StarRating";
+import { GameCard } from "@components/custom/GameCard";
 
 export const GameInfo = () => {
   const { id } = useParams();
@@ -25,10 +26,12 @@ export const GameInfo = () => {
     screenshots = [],
     companies = [],
     franchises = [],
-    // dlcs = [],
+    dlcs = [],
+    dlcCovers = [],
+    isGameDataLoading,
   } = useGameData(parseInt(id ?? ""));
 
-  if (!game || !cover) {
+  if (isGameDataLoading) {
     return <Loading />;
   }
 
@@ -127,10 +130,27 @@ export const GameInfo = () => {
             </HStack>
           </AccordionItemContent>
         </AccordionItem>
-        <AccordionItem value="2">
-          <AccordionItemTrigger>DLCs</AccordionItemTrigger>
-          <AccordionItemContent></AccordionItemContent>
-        </AccordionItem>
+        {dlcs.length > 0 && (
+          <AccordionItem value="2">
+            <AccordionItemTrigger>DLCs</AccordionItemTrigger>
+            <AccordionItemContent>
+              <HStack>
+                {dlcs?.map((dlc) => {
+                  const cover = dlcCovers.find(
+                    (dlcCover) => dlcCover.game === dlc.id
+                  );
+                  if (!cover) {
+                    return undefined;
+                  }
+                  const hiResCoverUrl = getIGDBHiResCover(cover?.url);
+                  return (
+                    <GameCard game={dlc} coverUrl={hiResCoverUrl} width={600} />
+                  );
+                })}
+              </HStack>
+            </AccordionItemContent>
+          </AccordionItem>
+        )}
       </AccordionRoot>
     </VStack>
   );

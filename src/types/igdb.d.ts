@@ -56,7 +56,7 @@ declare type Game = {
   total_rating: number;
   total_rating_count: number;
   updated_at?: EpochTimeStamp;
-  url?: string;
+  url: string;
   version_parent?: number;
   version_title?: string;
   videos?: number[];

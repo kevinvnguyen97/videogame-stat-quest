@@ -1,3 +1,4 @@
+import { getIGDBHiResCover } from "@utils/index";
 import { useEffect, useState } from "react";
 
 const BASE_URL = "http://localhost:8080/http://api.igdb.com/v4";
@@ -23,9 +24,12 @@ export async function getIGDBRecords<T>(args: {
   search?: string;
   ids?: number[];
 }): Promise<T[]> {
+  const { endpoint, search, ids = [] } = args;
+  if (!search && ids?.length <= 0) {
+    return [];
+  }
   let retryLimit = API_RETRY_LIMIT;
   let records: T[] = [];
-  const { endpoint, search, ids = [] } = args;
   const url = `${BASE_URL}/${endpoint}${
     ids.length > 0 ? `/${ids.filter(Boolean).join(",")}` : ""
   }?fields=*${search ? `&search=${search}` : ""}`;
@@ -52,6 +56,7 @@ export async function getIGDBRecords<T>(args: {
 }
 
 export const useGameData = (id: number) => {
+  const [isGameDataLoading, setIsGameDataLoading] = useState(true);
   const [game, setGame] = useState<Game>();
   const [cover, setCover] = useState<Cover>();
   const [platforms, setPlatforms] = useState<Platform[]>([]);
@@ -62,10 +67,16 @@ export const useGameData = (id: number) => {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [franchises, setFranchises] = useState<Franchise[]>();
   const [dlcs, setDlcs] = useState<Game[]>();
+  const [dlcCovers, setDlcCovers] = useState<Cover[]>();
+
+  useEffect(() => {
+    setIsGameDataLoading(true);
+  }, []);
 
   useEffect(() => {
     console.time("fetch game");
     const fetchGameData = async () => {
+      setIsGameDataLoading(true);
       const fetchedGame = (
         await getIGDBRecords<Game>({
           endpoint: IGDBEndpoint.GAMES,
@@ -82,7 +93,7 @@ export const useGameData = (id: number) => {
         fetchedScreenshots = [],
         fetchedInvolvedCompanies = [],
         fetchedFranchises = [],
-        fetchedDLCs = [],
+        fetchedDlcs = [],
       ] = await Promise.all([
         getIGDBRecords<Cover>({
           endpoint: IGDBEndpoint.COVERS,
@@ -126,18 +137,28 @@ export const useGameData = (id: number) => {
         ({ company }) => company
       );
 
-      const [fetchedCompanies] = await Promise.all([
+      const dlcCoverIds = fetchedDlcs?.map(({ cover }) => cover);
+
+      const [fetchedCompanies, fetchedDlcCovers] = await Promise.all([
         getIGDBRecords<Company>({
           endpoint: IGDBEndpoint.COMPANIES,
           ids: companyIds,
+        }),
+        getIGDBRecords<Cover>({
+          endpoint: IGDBEndpoint.COVERS,
+          ids: dlcCoverIds,
         }),
       ]);
 
       const fetchedCover = fetchedCovers[0];
       const hiResCover: Cover = {
         ...fetchedCover,
-        url: fetchedCover.url.replace("t_thumb", "t_cover_big_2x"),
+        url: getIGDBHiResCover(fetchedCover.url),
       };
+      const hiResDlcCovers: Cover[] = fetchedDlcCovers?.map((dlcCover) => ({
+        ...dlcCover,
+        url: getIGDBHiResCover(dlcCover.url),
+      }));
 
       const hiResScreenshots: Screenshot[] = fetchedScreenshots.map(
         (screenshot) => ({
@@ -155,12 +176,28 @@ export const useGameData = (id: number) => {
       setScreenshots(hiResScreenshots);
       setCompanies(fetchedCompanies);
       setFranchises(fetchedFranchises);
-      setDlcs(fetchedDLCs);
+      setDlcs(fetchedDlcs);
+      setDlcCovers(hiResDlcCovers);
+      setIsGameDataLoading(false);
     };
 
     fetchGameData();
     console.timeEnd("fetch game");
-  }, [id]);
+  }, [
+    id,
+    setGame,
+    setCover,
+    setPlatforms,
+    setGenres,
+    setVideos,
+    setGameModes,
+    setScreenshots,
+    setCompanies,
+    setFranchises,
+    setDlcs,
+    setDlcCovers,
+    setIsGameDataLoading,
+  ]);
 
   return {
     game,
@@ -173,5 +210,7 @@ export const useGameData = (id: number) => {
     companies,
     franchises,
     dlcs,
+    dlcCovers,
+    isGameDataLoading,
   };
 };
