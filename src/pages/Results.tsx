@@ -1,4 +1,4 @@
-import { Box, Card, HStack, Text, VStack, Image } from "@chakra-ui/react";
+import { Box, Card, HStack, Text, VStack } from "@chakra-ui/react";
 import { GameSearch } from "@components/custom/GameSearch";
 import { APP_NAME } from "@constants/appName";
 import { useEffect, useLayoutEffect, useState } from "react";
