@@ -28,34 +28,40 @@ export const GameContentAccordion = (props: GameContentAccordionProps) => {
   } = props;
   return (
     <AccordionRoot collapsible size="lg">
-      <AccordionItem value="0">
-        <AccordionItemTrigger>Videos</AccordionItemTrigger>
-        <AccordionItemContent>
-          <HStack gap={5} overflowX="scroll">
-            {videos?.map(({ id, video_id }) => (
-              <YouTubeIFrame
-                key={id}
-                videoId={video_id}
-                width={400}
-                height={225}
-              />
-            ))}
-          </HStack>
-        </AccordionItemContent>
-      </AccordionItem>
-      <AccordionItem value="1">
-        <AccordionItemTrigger>Screenshots</AccordionItemTrigger>
-        <AccordionItemContent>
-          <HStack gap={5} overflowX="scroll">
-            {screenshots?.map(({ id, url }) => (
-              <Image key={id} src={url} width="auto" height={250} />
-            ))}
-          </HStack>
-        </AccordionItemContent>
-      </AccordionItem>
+      {videos.length > 0 && (
+        <AccordionItem value="videos">
+          <AccordionItemTrigger>Videos ({videos.length})</AccordionItemTrigger>
+          <AccordionItemContent>
+            <HStack gap={5} overflowX="scroll">
+              {videos?.map(({ id, video_id }) => (
+                <YouTubeIFrame
+                  key={id}
+                  videoId={video_id}
+                  width={400}
+                  height={225}
+                />
+              ))}
+            </HStack>
+          </AccordionItemContent>
+        </AccordionItem>
+      )}
+      {screenshots.length > 0 && (
+        <AccordionItem value="screenshots">
+          <AccordionItemTrigger>
+            Screenshots ({screenshots.length})
+          </AccordionItemTrigger>
+          <AccordionItemContent>
+            <HStack gap={5} overflowX="scroll">
+              {screenshots?.map(({ id, url }) => (
+                <Image key={id} src={url} width="auto" height={250} />
+              ))}
+            </HStack>
+          </AccordionItemContent>
+        </AccordionItem>
+      )}
       {dlcs.length > 0 && (
-        <AccordionItem value="2">
-          <AccordionItemTrigger>DLCs</AccordionItemTrigger>
+        <AccordionItem value="dlcs">
+          <AccordionItemTrigger>DLCs ({dlcs.length})</AccordionItemTrigger>
           <AccordionItemContent>
             <HStack>
               {dlcs?.map((dlc) => {
@@ -80,7 +86,7 @@ export const GameContentAccordion = (props: GameContentAccordionProps) => {
         </AccordionItem>
       )}
       {parentGame && (
-        <AccordionItem value="3">
+        <AccordionItem value="parent">
           <AccordionItemTrigger>Parent Game</AccordionItemTrigger>
           <AccordionItemContent>
             <GameCard
