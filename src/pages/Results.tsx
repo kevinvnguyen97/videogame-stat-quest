@@ -63,13 +63,13 @@ export const Results = () => {
         {title}
       </Text>
       <GameSearch />
-      <HStack
-        alignItems="start"
-        animationDuration="slow"
-        animationStyle="scale-fade-in"
-        width="100%"
-      >
-        <Card.Root variant="subtle" mdTo2xl={{ width: "1/3" }}>
+      <HStack alignItems="start" width="100%">
+        <Card.Root
+          variant="subtle"
+          mdTo2xl={{ width: "1/3" }}
+          animationDuration="slow"
+          animationStyle="scale-fade-in"
+        >
           <Card.Header fontWeight="bold">Options</Card.Header>
         </Card.Root>
         <VStack mdTo2xl={{ width: "2/3" }} position="relative">

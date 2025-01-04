@@ -28,6 +28,8 @@ export const GameCard = (props: {
       _hover={{ cursor: "pointer" }}
       alignItems="start"
       onClick={() => navigate(`/game/${id}`)}
+      animationDuration="slow"
+      animationStyle="scale-fade-in"
     >
       <Image src={coverUrl} fit="contain" width={250} />
       <VStack alignItems="start">
