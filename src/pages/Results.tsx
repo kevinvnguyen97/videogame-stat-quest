@@ -63,27 +63,30 @@ export const Results = () => {
         {title}
       </Text>
       <GameSearch />
-      {games.length > 0 && searchText ? (
-        <HStack
-          alignItems="start"
-          animationDuration="slow"
-          animationStyle="scale-fade-in"
-        >
-          <Card.Root variant="subtle" mdTo2xl={{ width: "1/3" }}>
-            <Card.Header fontWeight="bold">Options</Card.Header>
-          </Card.Root>
-          <VStack mdTo2xl={{ width: "2/3" }}>
-            {games.map((game) => {
-              const cover = covers.find((cover) => cover.game === game.id);
-              return (
-                <GameCard key={game.id} game={game} coverUrl={cover?.url} />
-              );
-            })}
-          </VStack>
-        </HStack>
-      ) : (
-        <Loading />
-      )}
+      <HStack
+        alignItems="start"
+        animationDuration="slow"
+        animationStyle="scale-fade-in"
+        width="100%"
+      >
+        <Card.Root variant="subtle" mdTo2xl={{ width: "1/3" }}>
+          <Card.Header fontWeight="bold">Options</Card.Header>
+        </Card.Root>
+        <VStack mdTo2xl={{ width: "2/3" }} position="relative">
+          {games.length > 0 && searchText ? (
+            <>
+              {games.map((game) => {
+                const cover = covers.find((cover) => cover.game === game.id);
+                return (
+                  <GameCard key={game.id} game={game} coverUrl={cover?.url} />
+                );
+              })}
+            </>
+          ) : (
+            <Loading />
+          )}
+        </VStack>
+      </HStack>
     </Box>
   );
 };
