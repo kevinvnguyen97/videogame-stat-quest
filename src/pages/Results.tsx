@@ -14,9 +14,15 @@ export const Results = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [covers, setCovers] = useState<Cover[]>([]);
 
+  const title = `${
+    games.length > 0 && searchText
+      ? `${games.length} search results `
+      : "Searching"
+  } for "${searchText}"`;
+
   useLayoutEffect(() => {
-    window.document.title = `Search Results for "${searchText}" - ${APP_NAME}`;
-  }, [searchText]);
+    window.document.title = `${title} - ${APP_NAME}`;
+  }, [title, searchText]);
   useEffect(() => {
     const searchForGame = async (gameName: string) => {
       const games = await getIGDBRecords<Game>({
@@ -54,7 +60,7 @@ export const Results = () => {
       animationStyle="scale-fade-in"
     >
       <Text textAlign="center" fontSize="4xl">
-        Search Results for "{searchText}"
+        {title}
       </Text>
       <GameSearch />
       {games.length > 0 && searchText ? (
