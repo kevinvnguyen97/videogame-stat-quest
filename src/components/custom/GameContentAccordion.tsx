@@ -32,7 +32,7 @@ export const GameContentAccordion = (props: GameContentAccordionProps) => {
         <AccordionItem value="videos">
           <AccordionItemTrigger>Videos ({videos.length})</AccordionItemTrigger>
           <AccordionItemContent>
-            <HStack gap={5} overflowX="scroll">
+            <HStack gap={5} overflowX="auto">
               {videos?.map(({ id, video_id }) => (
                 <YouTubeIFrame
                   key={id}
@@ -51,7 +51,7 @@ export const GameContentAccordion = (props: GameContentAccordionProps) => {
             Screenshots ({screenshots.length})
           </AccordionItemTrigger>
           <AccordionItemContent>
-            <HStack gap={5} overflowX="scroll">
+            <HStack gap={5} overflowX="auto">
               {screenshots?.map(({ id, url }) => (
                 <Image key={id} src={url} width="auto" height={250} />
               ))}
@@ -63,7 +63,7 @@ export const GameContentAccordion = (props: GameContentAccordionProps) => {
         <AccordionItem value="dlcs">
           <AccordionItemTrigger>DLCs ({dlcs.length})</AccordionItemTrigger>
           <AccordionItemContent>
-            <HStack>
+            <HStack gap={5} overflowX="auto">
               {dlcs?.map((dlc) => {
                 const cover = dlcCovers.find(
                   (dlcCover) => dlcCover.game === dlc.id
