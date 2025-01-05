@@ -1,17 +1,9 @@
 import { useGameData } from "@api/igdb";
 import { Text, Image, HStack, VStack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { getIGDBHiResCover } from "@utils/index";
-import { YouTubeIFrame } from "@components/custom/YouTubeIFrame";
-import {
-  AccordionItem,
-  AccordionItemContent,
-  AccordionItemTrigger,
-  AccordionRoot,
-} from "@components/ui/accordion";
 import { Loading } from "@pages/Loading";
-import { GameCard } from "@components/custom/GameCard";
 import { GameInfoTable } from "@components/custom/GameInfoTable";
+import { GameContentAccordion } from "@components/custom/GameContentAccordion";
 
 export const GameInfo = () => {
   const { id } = useParams();
@@ -54,71 +46,14 @@ export const GameInfo = () => {
         />
         <Text maxWidth={500}>{game?.summary}</Text>
       </HStack>
-      <AccordionRoot collapsible size="lg">
-        <AccordionItem value="0">
-          <AccordionItemTrigger>Videos</AccordionItemTrigger>
-          <AccordionItemContent>
-            <HStack gap={5} overflowX="auto">
-              {videos?.map(({ id, video_id }) => (
-                <YouTubeIFrame
-                  key={id}
-                  videoId={video_id}
-                  width={400}
-                  height={225}
-                />
-              ))}
-            </HStack>
-          </AccordionItemContent>
-        </AccordionItem>
-        <AccordionItem value="1">
-          <AccordionItemTrigger>Screenshots</AccordionItemTrigger>
-          <AccordionItemContent>
-            <HStack gap={5} overflowX="auto">
-              {screenshots?.map(({ id, url }) => (
-                <Image key={id} src={url} width="auto" height={250} />
-              ))}
-            </HStack>
-          </AccordionItemContent>
-        </AccordionItem>
-        {dlcs.length > 0 && (
-          <AccordionItem value="2">
-            <AccordionItemTrigger>DLCs</AccordionItemTrigger>
-            <AccordionItemContent>
-              <HStack gap={5} overflowX="auto">
-                {dlcs?.map((dlc) => {
-                  const cover = dlcCovers.find(
-                    (dlcCover) => dlcCover.game === dlc.id
-                  );
-                  if (!cover) {
-                    return undefined;
-                  }
-                  const hiResCoverUrl = getIGDBHiResCover(cover?.url);
-                  return (
-                    <GameCard
-                      key={dlc.id}
-                      game={dlc}
-                      coverUrl={hiResCoverUrl}
-                      width={600}
-                    />
-                  );
-                })}
-              </HStack>
-            </AccordionItemContent>
-          </AccordionItem>
-        )}
-        {parentGame && (
-          <AccordionItem value="3">
-            <AccordionItemTrigger>Parent Game</AccordionItemTrigger>
-            <AccordionItemContent>
-              <GameCard
-                game={parentGame}
-                coverUrl={parentGameCover?.url}
-                width={600}
-              />
-            </AccordionItemContent>
-          </AccordionItem>
-        )}
-      </AccordionRoot>
+      <GameContentAccordion
+        videos={videos}
+        screenshots={screenshots}
+        dlcs={dlcs}
+        dlcCovers={dlcCovers}
+        parentGame={parentGame}
+        parentGameCover={parentGameCover}
+      />
     </VStack>
   );
 };

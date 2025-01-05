@@ -6,8 +6,11 @@ export const formatIGDBDate = (unixTimeStamp: number) => {
 
 export const convertRatingPercentageToStars = (ratingPercentage: number) => {
   const numberOfStars = (ratingPercentage / 100) * 5;
-  const numberOfFullStars = Math.round(numberOfStars);
+  let numberOfFullStars = Math.trunc(numberOfStars);
   const remainingStarSegment = numberOfStars - numberOfFullStars;
+  if (remainingStarSegment >= 0.7) {
+    numberOfFullStars++;
+  }
   const isHalfStarPresent =
     remainingStarSegment > 0.3 && remainingStarSegment < 0.7;
   const numberOfEmptyStars =

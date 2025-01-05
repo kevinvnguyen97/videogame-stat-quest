@@ -14,9 +14,15 @@ export const Results = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [covers, setCovers] = useState<Cover[]>([]);
 
+  const title = `${
+    games.length > 0 && searchText
+      ? `${games.length} search results `
+      : "Searching"
+  } for "${searchText}"`;
+
   useLayoutEffect(() => {
-    window.document.title = `Search Results for "${searchText}" - ${APP_NAME}`;
-  }, [searchText]);
+    window.document.title = `${title} - ${APP_NAME}`;
+  }, [title, searchText]);
   useEffect(() => {
     const searchForGame = async (gameName: string) => {
       const games = await getIGDBRecords<Game>({
@@ -54,30 +60,33 @@ export const Results = () => {
       animationStyle="scale-fade-in"
     >
       <Text textAlign="center" fontSize="4xl">
-        Search Results for "{searchText}"
+        {title}
       </Text>
       <GameSearch />
-      {games.length > 0 && searchText ? (
-        <HStack
-          alignItems="start"
+      <HStack alignItems="start" width="100%">
+        <Card.Root
+          variant="subtle"
+          mdTo2xl={{ width: "1/3" }}
           animationDuration="slow"
           animationStyle="scale-fade-in"
         >
-          <Card.Root variant="subtle" mdTo2xl={{ width: "1/3" }}>
-            <Card.Header fontWeight="bold">Options</Card.Header>
-          </Card.Root>
-          <VStack mdTo2xl={{ width: "2/3" }}>
-            {games.map((game) => {
-              const cover = covers.find((cover) => cover.game === game.id);
-              return (
-                <GameCard key={game.id} game={game} coverUrl={cover?.url} />
-              );
-            })}
-          </VStack>
-        </HStack>
-      ) : (
-        <Loading />
-      )}
+          <Card.Header fontWeight="bold">Options</Card.Header>
+        </Card.Root>
+        <VStack mdTo2xl={{ width: "2/3" }} position="relative">
+          {games.length > 0 && searchText ? (
+            <>
+              {games.map((game) => {
+                const cover = covers.find((cover) => cover.game === game.id);
+                return (
+                  <GameCard key={game.id} game={game} coverUrl={cover?.url} />
+                );
+              })}
+            </>
+          ) : (
+            <Loading />
+          )}
+        </VStack>
+      </HStack>
     </Box>
   );
 };

@@ -28,11 +28,16 @@ export const GameCard = (props: {
       _hover={{ cursor: "pointer" }}
       alignItems="start"
       onClick={() => navigate(`/game/${id}`)}
+      animationDuration="slow"
+      animationStyle="scale-fade-in"
     >
       <Image src={coverUrl} fit="contain" width={250} />
       <VStack alignItems="start">
         <Card.Header fontWeight="bold" fontSize="lg">
-          {name} ({DateTime.fromMillis(first_release_date * 1000).year})
+          {name}{" "}
+          {first_release_date
+            ? `(${DateTime.fromMillis(first_release_date * 1000).year})`
+            : ""}
         </Card.Header>
         {total_rating_count > 0 && (
           <Card.Header>
