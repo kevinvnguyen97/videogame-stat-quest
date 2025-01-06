@@ -1,7 +1,7 @@
 import { getIGDBHiResCover } from "@utils/index";
 import { useEffect, useState } from "react";
 
-const BASE_URL = "http://localhost:8080/http://api.igdb.com/v4";
+const BASE_URL = "http://localhost:3000/api";
 
 const API_WAIT_TIME_MS = 1000;
 const API_RETRY_LIMIT = 20;
