@@ -1,72 +1,74 @@
+type IgdbID = number;
+
 enum Category {}
 
 enum Status {}
 
 declare type Game = {
-  id: number;
+  id: IgdbID;
   age_ratings?: number[];
   aggregated_rating?: number;
   aggregated_rating_count?: number;
   alternative_names?: number[];
-  artworks?: number[];
-  bundles?: number[];
+  artworks?: IgdbID[];
+  bundles?: IgdbID[];
   category?: Category;
   checksum?: string;
-  collection?: number;
-  collections?: number[];
-  cover: number;
+  collection?: IgdbID;
+  collections?: IgdbID[];
+  cover: IgdbID;
   created_at: EpochTimeStamp;
-  dlcs?: number[];
-  expanded_games?: number[];
-  expansions?: number[];
-  external_games?: number[];
+  dlcs?: IgdbID[];
+  expanded_games?: IgdbID[];
+  expansions?: IgdbID[];
+  external_games?: IgdbID[];
   first_release_date: EpochTimeStamp;
-  follows?: number;
-  forks?: number[];
-  franchise: number;
-  franchises: number[];
-  game_engines?: number[];
-  game_localizations?: number[];
-  game_modes?: number[];
-  genres?: number[];
+  follows?: IgdbID;
+  forks?: IgdbID[];
+  franchise: IgdbID;
+  franchises: IgdbID[];
+  game_engines?: IgdbID[];
+  game_localizations?: IgdbID[];
+  game_modes?: IgdbID[];
+  genres?: IgdbID[];
   hypes?: number;
-  involved_companies?: number[];
-  keywords?: number[];
-  language_supports?: number[];
-  multiplayer_modes?: number[];
+  involved_companies?: IgdbID[];
+  keywords?: IgdbID[];
+  language_supports?: IgdbID[];
+  multiplayer_modes?: IgdbID[];
   name: string;
-  parent_game?: number;
-  platforms: number[];
-  player_perspectives?: number[];
-  ports?: number[];
+  parent_game?: IgdbID;
+  platforms: IgdbID[];
+  player_perspectives?: IgdbID[];
+  ports?: IgdbID[];
   rating?: number;
   rating_count?: number;
   release_dates: EpochTimeStamp[];
-  remakes?: number[];
-  remasters?: number[];
-  screenshots?: number[];
-  similar_games?: number[];
+  remakes?: IgdbID[];
+  remasters?: IgdbID[];
+  screenshots?: IgdbID[];
+  similar_games?: IgdbID[];
   slug?: string;
-  standalone_expansions?: number[];
+  standalone_expansions?: IgdbID[];
   status?: Status;
   storyline?: string;
   summary?: string;
-  tags?: number[];
-  themes?: number[];
+  tags?: IgdbID[];
+  themes?: IgdbID[];
   total_rating: number;
   total_rating_count: number;
   updated_at?: EpochTimeStamp;
   url: string;
-  version_parent?: number;
+  version_parent?: IgdbID;
   version_title?: string;
-  videos?: number[];
-  websites?: number[];
+  videos?: IgdbID[];
+  websites?: IgdbID[];
 };
 
 declare type Cover = {
-  id: number;
+  id: IgdbID;
   url: string;
-  game?: number;
+  game?: IgdbID;
   width: number;
   height: number;
   image_id: string;
@@ -75,7 +77,7 @@ declare type Cover = {
 };
 
 declare type Platform = {
-  id: number;
+  id: IgdbID;
   abbreviation: string;
   alternative_name: string;
   category: string;
@@ -83,18 +85,18 @@ declare type Platform = {
   created_at: EpochTimeStamp;
   generation: number;
   name: string;
-  platform_family: number;
-  platform_logo: number;
+  platform_family: IgdbID;
+  platform_logo: IgdbID;
   slug: string;
   summary: string;
   updated_at: EpochTimeStamp;
   url: string;
-  versions: number[];
-  websites: number[];
+  versions: IgdbID[];
+  websites: IgdbID[];
 };
 
 declare type Genre = {
-  id: number;
+  id: IgdbID;
   checksum?: string;
   created_at: EpochTimeStamp;
   name: string;
@@ -104,15 +106,15 @@ declare type Genre = {
 };
 
 declare type GameVideo = {
-  id: number;
+  id: IgdbID;
   checksum?: string;
-  game: number;
+  game: IgdbID;
   name: string;
   video_id: string;
 };
 
 declare type GameMode = {
-  id: number;
+  id: IgdbID;
   checksum?: string;
   created_at: EpochTimeStamp;
   name: string;
@@ -122,11 +124,11 @@ declare type GameMode = {
 };
 
 declare type Screenshot = {
-  id: number;
+  id: IgdbID;
   alpha_channel: boolean;
   animated: boolean;
   checksum: string;
-  game: number;
+  game: IgdbID;
   height: number;
   image_id: string;
   url: string;
@@ -134,12 +136,12 @@ declare type Screenshot = {
 };
 
 declare type InvolvedCompany = {
-  id: number;
-  checksum: number;
-  company: number;
+  id: IgdbID;
+  checksum: string;
+  company: IgdbID;
   created_at: EpochTimestamp;
   developer: boolean;
-  game: number;
+  game: IgdbID;
   porting: boolean;
   publisher: boolean;
   supporting: boolean;
@@ -147,7 +149,7 @@ declare type InvolvedCompany = {
 };
 
 declare type Company = {
-  id: number;
+  id: IgdbID;
   change_date: EpochTimeStamp;
   change_date_category: number;
   changed_company_id: number;
@@ -155,24 +157,24 @@ declare type Company = {
   country: number;
   created_at: EpochTimeStamp;
   description: string;
-  developed: number[];
-  logo: number;
+  developed: IgdbID[];
+  logo: IgdbID;
   name: string;
-  parent: number;
-  published: number[];
+  parent: IgdbID;
+  published: IgdbID[];
   slug: string;
   start_date: EpochTimeStamp;
   start_date_category: number;
   updated_at: EpochTimeStamp;
   url: string;
-  websites: number[];
+  websites: IgdbID[];
 };
 
 declare type Franchise = {
-  id: number;
+  id: IgdbID;
   checksum: string;
   created_at: EpochTimeStamp;
-  games: number[];
+  games: IgdbID[];
   name: string;
   slug: string;
   updated_at: EpochTimeStamp;
@@ -180,17 +182,17 @@ declare type Franchise = {
 };
 
 declare type LanguageSupport = {
-  id: number;
+  id: IgdbID;
   checksum: string;
   created_at: EpochTimeStamp;
-  game: number;
-  language: number;
-  language_support_type: number;
+  game: IgdbID;
+  language: IgdbID;
+  language_support_type: IgdbID;
   updated_at: EpochTimeStamp;
 };
 
 declare type Language = {
-  id: number;
+  id: IgdbID;
   checksum: string;
   created_at: EpochTimeStamp;
   locale: string;
