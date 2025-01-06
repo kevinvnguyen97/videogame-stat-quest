@@ -9,6 +9,7 @@ type GameInfoTableProps = {
   platforms: Platform[];
   genres: Genre[];
   gameModes: GameMode[];
+  languages: Language[];
 };
 export const GameInfoTable = (props: GameInfoTableProps) => {
   const {
@@ -18,6 +19,7 @@ export const GameInfoTable = (props: GameInfoTableProps) => {
     platforms = [],
     genres = [],
     gameModes = [],
+    languages = [],
   } = props;
   return (
     <Table.Root width={350}>
@@ -74,6 +76,14 @@ export const GameInfoTable = (props: GameInfoTableProps) => {
           <Table.ColumnHeader>Game Modes</Table.ColumnHeader>
           <Table.Cell>
             {gameModes?.map(({ id, name }) => (
+              <Box key={id}>{name}</Box>
+            ))}
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.ColumnHeader>Language(s)</Table.ColumnHeader>
+          <Table.Cell>
+            {languages?.map(({ id, name }) => (
               <Box key={id}>{name}</Box>
             ))}
           </Table.Cell>

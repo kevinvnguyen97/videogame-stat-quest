@@ -178,3 +178,23 @@ declare type Franchise = {
   updated_at: EpochTimeStamp;
   url: string;
 };
+
+declare type LanguageSupport = {
+  id: number;
+  checksum: string;
+  created_at: EpochTimeStamp;
+  game: number;
+  language: number;
+  language_support_type: number;
+  updated_at: EpochTimeStamp;
+};
+
+declare type Language = {
+  id: number;
+  checksum: string;
+  created_at: EpochTimeStamp;
+  locale: string;
+  name: string;
+  native_name: string;
+  updated_at: EpochTimeStamp;
+};

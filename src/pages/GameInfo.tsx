@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { Loading } from "@pages/Loading";
 import { GameInfoTable } from "@components/custom/GameInfoTable";
 import { GameContentAccordion } from "@components/custom/GameContentAccordion";
+import { useEffect } from "react";
+import { APP_NAME } from "@constants/appName";
 
 export const GameInfo = () => {
   const { id } = useParams();
@@ -22,8 +24,15 @@ export const GameInfo = () => {
     dlcCovers = [],
     parentGame,
     parentGameCover,
+    languages,
     isGameDataLoading,
   } = useGameData(parseInt(id ?? ""));
+
+  useEffect(() => {
+    window.document.title = `${
+      isGameDataLoading && !game ? "Loading" : game?.name
+    } - ${APP_NAME}`;
+  }, [game, isGameDataLoading]);
 
   if (isGameDataLoading) {
     return <Loading />;
@@ -43,6 +52,7 @@ export const GameInfo = () => {
           platforms={platforms}
           genres={genres}
           gameModes={gameModes}
+          languages={languages}
         />
         <Text maxWidth={500}>{game?.summary}</Text>
       </HStack>

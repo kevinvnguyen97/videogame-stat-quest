@@ -17,6 +17,8 @@ export enum IGDBEndpoint {
   INVOLVED_COMPANIES = "involved_companies",
   COMPANIES = "companies",
   FRANCHISES = "franchises",
+  LANGUAGE_SUPPORTS = "language_supports",
+  LANGUAGES = "languages",
 }
 
 export async function getIGDBRecords<T>(args: {
@@ -58,6 +60,8 @@ export async function getIGDBRecords<T>(args: {
 export const useGameData = (id: number) => {
   const [isGameDataLoading, setIsGameDataLoading] = useState(true);
   const [game, setGame] = useState<Game>();
+
+  // Game info
   const [cover, setCover] = useState<Cover>();
   const [platforms, setPlatforms] = useState<Platform[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
@@ -66,10 +70,17 @@ export const useGameData = (id: number) => {
   const [screenshots, setScreenshots] = useState<Screenshot[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [franchises, setFranchises] = useState<Franchise[]>();
+
+  // DLCs
   const [dlcs, setDlcs] = useState<Game[]>();
   const [dlcCovers, setDlcCovers] = useState<Cover[]>();
+
+  // Parent game
   const [parentGame, setParentGame] = useState<Game>();
   const [parentGameCover, setParentGameCover] = useState<Cover>();
+
+  const [languageSupports, setLanguageSupports] = useState<LanguageSupport[]>();
+  const [languages, setLanguages] = useState<Language[]>();
 
   useEffect(() => {
     setIsGameDataLoading(true);
@@ -97,6 +108,7 @@ export const useGameData = (id: number) => {
         fetchedFranchises = [],
         fetchedDlcs = [],
         fetchedParentGames = [],
+        fetchedLanguageSupports = [],
       ] = await Promise.all([
         getIGDBRecords<Cover>({
           endpoint: IGDBEndpoint.COVERS,
@@ -138,6 +150,10 @@ export const useGameData = (id: number) => {
           endpoint: IGDBEndpoint.GAMES,
           ids: [fetchedGame.parent_game ?? NaN],
         }),
+        getIGDBRecords<LanguageSupport>({
+          endpoint: IGDBEndpoint.LANGUAGE_SUPPORTS,
+          ids: fetchedGame.language_supports,
+        }),
       ]);
 
       const companyIds = fetchedInvolvedCompanies?.map(
@@ -145,11 +161,15 @@ export const useGameData = (id: number) => {
       );
       const dlcCoverIds = fetchedDlcs?.map(({ cover }) => cover);
       const parentGameCoverId = fetchedParentGames[0]?.cover;
+      const languageIds = fetchedLanguageSupports?.map(
+        ({ language }) => language
+      );
 
       const [
         fetchedCompanies = [],
         fetchedDlcCovers = [],
         fetchedParentGameCovers = [],
+        fetchedLanguages = [],
       ] = await Promise.all([
         getIGDBRecords<Company>({
           endpoint: IGDBEndpoint.COMPANIES,
@@ -162,6 +182,10 @@ export const useGameData = (id: number) => {
         getIGDBRecords<Cover>({
           endpoint: IGDBEndpoint.COVERS,
           ids: [parentGameCoverId],
+        }),
+        getIGDBRecords<Language>({
+          endpoint: IGDBEndpoint.LANGUAGES,
+          ids: languageIds,
         }),
       ]);
 
@@ -200,6 +224,8 @@ export const useGameData = (id: number) => {
       setDlcCovers(hiResDlcCovers);
       setParentGame(fetchedParentGames[0]);
       setParentGameCover(hiResParentGameCover);
+      setLanguageSupports(fetchedLanguageSupports);
+      setLanguages(fetchedLanguages);
       setIsGameDataLoading(false);
     };
 
@@ -220,6 +246,8 @@ export const useGameData = (id: number) => {
     setDlcCovers,
     setParentGame,
     setParentGameCover,
+    setLanguageSupports,
+    setLanguages,
     setIsGameDataLoading,
   ]);
 
@@ -237,6 +265,8 @@ export const useGameData = (id: number) => {
     dlcCovers,
     parentGame,
     parentGameCover,
+    languageSupports,
+    languages,
     isGameDataLoading,
   };
 };
