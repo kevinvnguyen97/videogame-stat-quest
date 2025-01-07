@@ -35,7 +35,7 @@ export const Results = () => {
         endpoint: IGDBEndpoint.COVERS,
         ids: coverIds,
       });
-      const hiResCovers = coversForGame.map((cover) => ({
+      const hiResCovers: Cover[] = coversForGame.map((cover) => ({
         ...cover,
         url: getIGDBHiResCover(cover?.url),
       }));
