@@ -24,7 +24,7 @@ export const GameInfo = () => {
     dlcCovers = [],
     parentGame,
     parentGameCover,
-    languages,
+    languages = [],
     isGameDataLoading,
   } = useGameData(parseInt(id ?? ""));
 
