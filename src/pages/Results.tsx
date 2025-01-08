@@ -40,7 +40,11 @@ export const Results = () => {
         url: getIGDBHiResCover(cover?.url),
       }));
 
-      setGames(uniqueGames);
+      const sortedGames = uniqueGames.sort(
+        (a, b) => (b.total_rating_count ?? 0) - (a.total_rating_count ?? 0)
+      );
+
+      setGames(sortedGames);
       setCovers(hiResCovers);
     };
     if (searchText) {
