@@ -23,6 +23,7 @@ export const GameCard = (props: {
     <Card.Root
       key={id}
       variant="subtle"
+      minWidth={width ?? "100%"}
       width={width ?? "100%"}
       flexDirection="row"
       _hover={{ cursor: "pointer" }}

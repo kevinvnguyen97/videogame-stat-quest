@@ -14,18 +14,25 @@ export const useGameData = (id: number) => {
   const [gameModes, setGameModes] = useState<GameMode[]>([]);
   const [screenshots, setScreenshots] = useState<Screenshot[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
-  const [franchises, setFranchises] = useState<Franchise[]>();
+  const [franchises, setFranchises] = useState<Franchise[]>([]);
 
   // DLCs
-  const [dlcs, setDlcs] = useState<Game[]>();
-  const [dlcCovers, setDlcCovers] = useState<Cover[]>();
+  const [dlcs, setDlcs] = useState<Game[]>([]);
+  const [dlcCovers, setDlcCovers] = useState<Cover[]>([]);
 
   // Parent game
   const [parentGame, setParentGame] = useState<Game>();
   const [parentGameCover, setParentGameCover] = useState<Cover>();
 
-  const [languageSupports, setLanguageSupports] = useState<LanguageSupport[]>();
-  const [languages, setLanguages] = useState<Language[]>();
+  // Languages
+  const [languageSupports, setLanguageSupports] = useState<LanguageSupport[]>(
+    []
+  );
+  const [languages, setLanguages] = useState<Language[]>([]);
+
+  // Similar games
+  const [similarGames, setSimilarGames] = useState<Game[]>([]);
+  const [similarGameCovers, setSimilarGameCovers] = useState<Cover[]>([]);
 
   useEffect(() => {
     setIsGameDataLoading(true);
@@ -42,6 +49,10 @@ export const useGameData = (id: number) => {
         })
       )[0];
 
+      if (!fetchedGame) {
+        return;
+      }
+
       const [
         fetchedCovers = [],
         fetchedPlatforms = [],
@@ -54,6 +65,7 @@ export const useGameData = (id: number) => {
         fetchedDlcs = [],
         fetchedParentGames = [],
         fetchedLanguageSupports = [],
+        fetchedSimilarGames = [],
       ] = await Promise.all([
         getIGDBRecords<Cover>({
           endpoint: IGDBEndpoint.COVERS,
@@ -99,6 +111,10 @@ export const useGameData = (id: number) => {
           endpoint: IGDBEndpoint.LANGUAGE_SUPPORTS,
           ids: fetchedGame.language_supports,
         }),
+        getIGDBRecords<Game>({
+          endpoint: IGDBEndpoint.GAMES,
+          ids: fetchedGame.similar_games,
+        }),
       ]);
 
       const companyIds = fetchedInvolvedCompanies?.map(
@@ -109,12 +125,16 @@ export const useGameData = (id: number) => {
       const languageIds = fetchedLanguageSupports?.map(
         ({ language }) => language
       );
+      const similarGameCoverIds = fetchedSimilarGames?.map(
+        ({ cover }) => cover
+      );
 
       const [
         fetchedCompanies = [],
         fetchedDlcCovers = [],
         fetchedParentGameCovers = [],
         fetchedLanguages = [],
+        fetchedSimilarGameCovers = [],
       ] = await Promise.all([
         getIGDBRecords<Company>({
           endpoint: IGDBEndpoint.COMPANIES,
@@ -131,6 +151,10 @@ export const useGameData = (id: number) => {
         getIGDBRecords<Language>({
           endpoint: IGDBEndpoint.LANGUAGES,
           ids: languageIds,
+        }),
+        getIGDBRecords<Cover>({
+          endpoint: IGDBEndpoint.COVERS,
+          ids: similarGameCoverIds,
         }),
       ]);
 
@@ -156,6 +180,13 @@ export const useGameData = (id: number) => {
         })
       );
 
+      const hiResSimilarGameCovers: Cover[] = fetchedSimilarGameCovers?.map(
+        (similarGameCover) => ({
+          ...similarGameCover,
+          url: getIGDBHiResCover(similarGameCover.url),
+        })
+      );
+
       setGame(fetchedGame);
       setCover(hiResCover);
       setPlatforms(fetchedPlatforms);
@@ -171,6 +202,8 @@ export const useGameData = (id: number) => {
       setParentGameCover(hiResParentGameCover);
       setLanguageSupports(fetchedLanguageSupports);
       setLanguages(fetchedLanguages);
+      setSimilarGames(fetchedSimilarGames);
+      setSimilarGameCovers(hiResSimilarGameCovers);
       setIsGameDataLoading(false);
     };
 
@@ -193,6 +226,8 @@ export const useGameData = (id: number) => {
     setParentGameCover,
     setLanguageSupports,
     setLanguages,
+    setSimilarGames,
+    setSimilarGameCovers,
     setIsGameDataLoading,
   ]);
 
@@ -212,6 +247,8 @@ export const useGameData = (id: number) => {
     parentGameCover,
     languageSupports,
     languages,
+    similarGames,
+    similarGameCovers,
     isGameDataLoading,
   };
 };

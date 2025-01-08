@@ -16,6 +16,8 @@ type GameContentAccordionProps = {
   dlcCovers: Cover[];
   parentGame?: Game;
   parentGameCover?: Cover;
+  similarGames: Game[];
+  similarGameCovers: Cover[];
 };
 export const GameContentAccordion = (props: GameContentAccordionProps) => {
   const {
@@ -25,6 +27,8 @@ export const GameContentAccordion = (props: GameContentAccordionProps) => {
     dlcCovers = [],
     parentGame,
     parentGameCover,
+    similarGames,
+    similarGameCovers,
   } = props;
   return (
     <AccordionRoot collapsible size="lg">
@@ -94,6 +98,34 @@ export const GameContentAccordion = (props: GameContentAccordionProps) => {
               coverUrl={parentGameCover?.url}
               width={600}
             />
+          </AccordionItemContent>
+        </AccordionItem>
+      )}
+      {similarGames.length > 0 && (
+        <AccordionItem value="similar-games">
+          <AccordionItemTrigger>
+            Similar Games ({similarGames.length})
+          </AccordionItemTrigger>
+          <AccordionItemContent>
+            <HStack gap={5} overflowX="auto">
+              {similarGames?.map((similarGame) => {
+                const cover = similarGameCovers.find(
+                  (similarGameCover) => similarGameCover.game === similarGame.id
+                );
+                if (!cover) {
+                  return undefined;
+                }
+                const hiResCoverUrl = getIGDBHiResCover(cover?.url);
+                return (
+                  <GameCard
+                    key={similarGame.id}
+                    game={similarGame}
+                    coverUrl={hiResCoverUrl}
+                    width={600}
+                  />
+                );
+              })}
+            </HStack>
           </AccordionItemContent>
         </AccordionItem>
       )}

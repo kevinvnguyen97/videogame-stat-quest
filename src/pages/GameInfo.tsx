@@ -25,6 +25,8 @@ export const GameInfo = () => {
     parentGame,
     parentGameCover,
     languages = [],
+    similarGames = [],
+    similarGameCovers = [],
     isGameDataLoading,
   } = useGameData(parseInt(id ?? ""));
 
@@ -63,6 +65,8 @@ export const GameInfo = () => {
         dlcCovers={dlcCovers}
         parentGame={parentGame}
         parentGameCover={parentGameCover}
+        similarGames={similarGames}
+        similarGameCovers={similarGameCovers}
       />
     </VStack>
   );
