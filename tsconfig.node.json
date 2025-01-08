@@ -12,7 +12,8 @@
       "@constants/*": ["constants/*"],
       "@api/*": ["api/*"],
       "@types/*": ["types/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@hooks/*": ["hooks/*"]
     },
     "baseUrl": "src",
 

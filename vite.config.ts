@@ -13,11 +13,11 @@ export default defineConfig({
         secure: false,
         ws: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
-        configure: (proxy, options) => {
+        configure: (proxy) => {
           proxy.on("error", (err) => {
             console.log("proxy error", err);
           });
-          proxy.on("proxyReq", (proxyReq, req) => {
+          proxy.on("proxyReq", (_, req) => {
             console.log("Sending Request to the Target:", req.method, req.url);
           });
           proxy.on("proxyRes", (proxyRes, req) => {
@@ -63,6 +63,10 @@ export default defineConfig({
       {
         find: "@utils",
         replacement: fileURLToPath(new URL("./src/utils", import.meta.url)),
+      },
+      {
+        find: "@hooks",
+        replacement: fileURLToPath(new URL("./src/hooks", import.meta.url)),
       },
     ],
   },

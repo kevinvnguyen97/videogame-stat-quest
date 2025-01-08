@@ -1,4 +1,4 @@
-import { useGameData } from "@api/igdb";
+import { useGameData } from "@hooks/igdb";
 import { Text, Image, HStack, VStack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { Loading } from "@pages/Loading";
