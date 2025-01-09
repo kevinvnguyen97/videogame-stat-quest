@@ -71,12 +71,13 @@ export const Results = () => {
         <Card.Root
           variant="subtle"
           md={{ width: "1/3" }}
+          lg={{ width: "1/4" }}
           animationDuration="slow"
           animationStyle="scale-fade-in"
         >
           <Card.Header fontWeight="bold">Options</Card.Header>
         </Card.Root>
-        <VStack md={{ width: "2/3" }} position="relative">
+        <VStack md={{ width: "2/3" }} lg={{ width: "3/4" }} position="relative">
           {games.length > 0 && searchText ? (
             <>
               {games.map((game) => {
