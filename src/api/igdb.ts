@@ -31,7 +31,7 @@ export async function getIGDBRecords<T>(args: {
   let records: T[] = [];
   const url = `${BASE_URL}/${endpoint}${
     ids.length > 0 ? `/${[...new Set(ids.filter(Boolean))].join(",")}` : ""
-  }?fields=*${search ? `&search=${search}` : ""}`;
+  }?fields=*${search ? `&search=${search}` : ""}&limit=500`;
   const encodedUrl = encodeURI(url);
   do {
     const response = await fetch(encodedUrl, {
