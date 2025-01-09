@@ -6,6 +6,7 @@ import { GameInfoTable } from "@components/custom/GameInfoTable";
 import { GameContentAccordion } from "@components/custom/GameContentAccordion";
 import { useEffect } from "react";
 import { APP_NAME } from "@constants/appName";
+import { ErrorScreen } from "@components/custom/ErrorScreen";
 
 export const GameInfo = () => {
   const { id } = useParams();
@@ -32,12 +33,16 @@ export const GameInfo = () => {
 
   useEffect(() => {
     window.document.title = `${
-      isGameDataLoading && !game ? "Loading" : game?.name
+      isGameDataLoading && !game ? "Loading" : game ? game?.name : "Error"
     } - ${APP_NAME}`;
   }, [game, isGameDataLoading]);
 
   if (isGameDataLoading) {
     return <Loading />;
+  }
+
+  if (!game && !isGameDataLoading) {
+    return <ErrorScreen>Game does not exist</ErrorScreen>;
   }
 
   return (

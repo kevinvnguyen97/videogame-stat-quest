@@ -50,6 +50,7 @@ export const useGameData = (id: number) => {
       )[0];
 
       if (!fetchedGame) {
+        setIsGameDataLoading(false);
         return;
       }
 
