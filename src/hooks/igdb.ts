@@ -1,6 +1,22 @@
 import { getIGDBRecords, IGDBEndpoint } from "@api/igdb";
 import { getIGDBHiResCover } from "@utils/index";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
+export const usePaginatedGameResults = (args: {
+  games: Game[];
+  pageNumber: number;
+  gamesPerPage: number;
+}) => {
+  const { games, pageNumber, gamesPerPage } = args;
+
+  const gamesInPage = useMemo(
+    () =>
+      games.slice((pageNumber - 1) * gamesPerPage, pageNumber * gamesPerPage),
+    [games, pageNumber, gamesPerPage]
+  );
+
+  return gamesInPage;
+};
 
 export const useGameData = (id: number) => {
   const [isGameDataLoading, setIsGameDataLoading] = useState(true);

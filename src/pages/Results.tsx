@@ -7,6 +7,8 @@ import { getIGDBRecords, IGDBEndpoint } from "@api/igdb";
 import { Loading } from "@pages/Loading";
 import { GameCard } from "@components/custom/GameCard";
 import { getIGDBHiResCover } from "@utils/index";
+import { GameResultsPagination } from "@components/custom/GameResultsPagination";
+import { usePaginatedGameResults } from "@hooks/igdb";
 
 export const Results = () => {
   const { searchText } = useParams();
@@ -14,12 +16,20 @@ export const Results = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [covers, setCovers] = useState<Cover[]>([]);
 
+  const [gamesPerPage] = useState(10);
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const paginatedGames = usePaginatedGameResults({
+    games,
+    pageNumber,
+    gamesPerPage,
+  });
+
   const title = `${
     games.length > 0 && searchText
       ? `${games.length} search results `
       : "Searching"
   } for "${searchText}"`;
-
   useLayoutEffect(() => {
     window.document.title = `${title} - ${APP_NAME}`;
   }, [title, searchText]);
@@ -29,8 +39,7 @@ export const Results = () => {
         endpoint: IGDBEndpoint.GAMES,
         search: gameName,
       });
-      const uniqueGames = games.filter(({ parent_game }) => !parent_game);
-      const coverIds = uniqueGames.map(({ cover }) => cover);
+      const coverIds = games.map(({ cover }) => cover);
       const coversForGame = await getIGDBRecords<Cover>({
         endpoint: IGDBEndpoint.COVERS,
         ids: coverIds,
@@ -40,11 +49,7 @@ export const Results = () => {
         url: getIGDBHiResCover(cover?.url),
       }));
 
-      const sortedGames = uniqueGames.sort(
-        (a, b) => (b.total_rating_count ?? 0) - (a.total_rating_count ?? 0)
-      );
-
-      setGames(sortedGames);
+      setGames(games);
       setCovers(hiResCovers);
     };
     if (searchText) {
@@ -80,12 +85,24 @@ export const Results = () => {
         <VStack md={{ width: "2/3" }} lg={{ width: "3/4" }} position="relative">
           {games.length > 0 && searchText ? (
             <>
-              {games.map((game) => {
+              <GameResultsPagination
+                totalGameCount={games.length}
+                gamesPerPage={gamesPerPage}
+                pageNumber={pageNumber}
+                onPageChange={setPageNumber}
+              />
+              {paginatedGames.map((game) => {
                 const cover = covers.find((cover) => cover.game === game.id);
                 return (
                   <GameCard key={game.id} game={game} coverUrl={cover?.url} />
                 );
               })}
+              <GameResultsPagination
+                totalGameCount={games.length}
+                gamesPerPage={gamesPerPage}
+                pageNumber={pageNumber}
+                onPageChange={setPageNumber}
+              />
             </>
           ) : (
             <Loading />
