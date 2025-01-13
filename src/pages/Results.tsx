@@ -9,6 +9,9 @@ import { GameCard } from "@components/custom/GameCard";
 import { getIGDBHiResCover } from "@utils/index";
 import { GameResultsPagination } from "@components/custom/GameResultsPagination";
 import { usePaginatedGameResults } from "@hooks/igdb";
+import { Slider } from "@components/ui/slider";
+
+const GAMES_PER_PAGE_OPTIONS = [1, 5, 10, 20, 50, 100, 200, 500];
 
 export const Results = () => {
   const { searchText } = useParams();
@@ -16,7 +19,7 @@ export const Results = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [covers, setCovers] = useState<Cover[]>([]);
 
-  const [gamesPerPage] = useState(10);
+  const [gamesPerPage, setGamesPerPage] = useState(5);
   const [pageNumber, setPageNumber] = useState(1);
 
   const paginatedGames = usePaginatedGameResults({
@@ -24,6 +27,10 @@ export const Results = () => {
     pageNumber,
     gamesPerPage,
   });
+
+  const filteredGamesPerPageOptions = GAMES_PER_PAGE_OPTIONS.filter(
+    (gamesPerPageOption) => gamesPerPageOption <= games.length
+  );
 
   const title = `${
     games.length > 0 && searchText
@@ -81,6 +88,28 @@ export const Results = () => {
           animationStyle="scale-fade-in"
         >
           <Card.Header fontWeight="bold">Options</Card.Header>
+          <Card.Body>
+            <Text>Games Per Page</Text>
+            <Slider
+              size="md"
+              defaultValue={[gamesPerPage]}
+              marks={filteredGamesPerPageOptions.map(
+                (gamesPerPageOption, i) => ({
+                  label: gamesPerPageOption,
+                  value: (100 / (filteredGamesPerPageOptions.length - 1)) * i,
+                })
+              )}
+              step={100 / (filteredGamesPerPageOptions.length - 1)}
+              thumbAlignment="center"
+              thumbSize={{ width: 16, height: 16 }}
+              disabled={!(games.length > 0 && searchText)}
+              onValueChangeEnd={(e) => {
+                const i =
+                  (e.value[0] * (filteredGamesPerPageOptions.length - 1)) / 100;
+                setGamesPerPage(filteredGamesPerPageOptions[i]);
+              }}
+            />
+          </Card.Body>
         </Card.Root>
         <VStack md={{ width: "2/3" }} lg={{ width: "3/4" }} position="relative">
           {games.length > 0 && searchText ? (
