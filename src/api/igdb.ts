@@ -24,13 +24,14 @@ export async function getIGDBRecords<T>(args: {
   ids?: number[];
 }): Promise<T[]> {
   const { endpoint, search, ids = [] } = args;
-  if (!search && ids?.filter(Boolean).length <= 0) {
+  const filteredIds = [...new Set(ids.filter(Boolean))];
+  if (!search && filteredIds.length <= 0) {
     return [];
   }
   let retryLimit = API_RETRY_LIMIT;
   let records: T[] = [];
   const url = `${BASE_URL}/${endpoint}${
-    ids.length > 0 ? `/${[...new Set(ids.filter(Boolean))].join(",")}` : ""
+    ids.length > 0 ? `/${filteredIds.join(",")}` : ""
   }?fields=*${search ? `&search=${search}` : ""}&limit=500`;
   const encodedUrl = encodeURI(url);
   do {
