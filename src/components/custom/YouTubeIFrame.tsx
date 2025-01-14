@@ -8,7 +8,7 @@ type YouTubeIFrameProps = {
 export const YouTubeIFrame = (props: YouTubeIFrameProps) => {
   const { videoId, width, height } = props;
   return (
-    <Box>
+    <Box animationDuration="slow" animationStyle="scale-fade-in">
       <iframe
         id={videoId}
         typeof="text/html"

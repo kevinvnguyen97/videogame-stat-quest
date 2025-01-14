@@ -57,7 +57,14 @@ export const GameContentAccordion = (props: GameContentAccordionProps) => {
           <AccordionItemContent>
             <HStack gap={5} overflowX="auto">
               {screenshots?.map(({ id, url }) => (
-                <Image key={id} src={url} width="auto" height={250} />
+                <Image
+                  animationDuration="slow"
+                  animationStyle="scale-fade-in"
+                  key={id}
+                  src={url}
+                  width="auto"
+                  height={250}
+                />
               ))}
             </HStack>
           </AccordionItemContent>
