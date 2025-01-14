@@ -20,8 +20,8 @@ export const GameResultsOptions = (props: GameResultsOptionsProps) => {
     <Card.Root variant="subtle">
       <Card.Header fontWeight="bold">Options</Card.Header>
       <Card.Body>
-        <Text>Games Per Page</Text>
         <Slider
+          label="Games Per Page"
           size="md"
           value={[
             (100 / (gamesPerPageOptions.length - 1)) * gamesPerPageOptionIndex,
