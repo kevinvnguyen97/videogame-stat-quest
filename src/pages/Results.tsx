@@ -82,8 +82,9 @@ export const Results = () => {
               thumbSize={{ width: 16, height: 16 }}
               disabled={!(games.length > 0 && searchText)}
               onValueChangeEnd={(e) => {
-                const i =
-                  (e.value[0] * (filteredGamesPerPageOptions.length - 1)) / 100;
+                const i = Math.round(
+                  (e.value[0] * (filteredGamesPerPageOptions.length - 1)) / 100
+                );
                 setGamesPerPage(filteredGamesPerPageOptions[i]);
               }}
             />
