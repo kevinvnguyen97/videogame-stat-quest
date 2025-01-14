@@ -1,7 +1,7 @@
 import { Box, Card, HStack, Text, VStack } from "@chakra-ui/react";
 import { GameSearch } from "@components/custom/GameSearch";
 import { APP_NAME } from "@constants/appName";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Loading } from "@pages/Loading";
 import { GameCard } from "@components/custom/GameCard";
@@ -26,8 +26,12 @@ export const Results = () => {
     gamesPerPage,
   });
 
-  const filteredGamesPerPageOptions = GAMES_PER_PAGE_OPTIONS.filter(
-    (gamesPerPageOption) => gamesPerPageOption <= games.length
+  const filteredGamesPerPageOptions = useMemo(
+    () =>
+      GAMES_PER_PAGE_OPTIONS.filter(
+        (gamesPerPageOption) => gamesPerPageOption <= games.length
+      ),
+    [games.length]
   );
 
   const gamesPerPageOptionIndex =
