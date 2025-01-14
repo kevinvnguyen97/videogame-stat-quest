@@ -18,6 +18,42 @@ export const usePaginatedGameResults = (args: {
   return gamesInPage;
 };
 
+export const useGameResults = (gameName: string) => {
+  const [games, setGames] = useState<Game[]>([]);
+  const [covers, setCovers] = useState<Cover[]>([]);
+  const [isGameResultsLoading, setIsGameResultsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsGameResultsLoading(true);
+  }, []);
+  useEffect(() => {
+    console.time("fetch game results");
+    const searchForGame = async (gameName: string) => {
+      const fetchedGames = await getIGDBRecords<Game>({
+        endpoint: IGDBEndpoint.GAMES,
+        search: gameName,
+      });
+      const coverIds = fetchedGames.map(({ cover }) => cover);
+      const coversForGame = await getIGDBRecords<Cover>({
+        endpoint: IGDBEndpoint.COVERS,
+        ids: coverIds,
+      });
+      const hiResCovers: Cover[] = coversForGame.map((cover) => ({
+        ...cover,
+        url: getIGDBHiResCover(cover?.url),
+      }));
+
+      setGames(fetchedGames);
+      setCovers(hiResCovers);
+      setIsGameResultsLoading(false);
+    };
+    searchForGame(gameName);
+    console.timeEnd("fetch game results");
+  }, [gameName, setGames, setCovers, setIsGameResultsLoading]);
+
+  return { games, covers, isGameResultsLoading };
+};
+
 export const useGameData = (id: number) => {
   const [isGameDataLoading, setIsGameDataLoading] = useState(true);
   const [game, setGame] = useState<Game>();
