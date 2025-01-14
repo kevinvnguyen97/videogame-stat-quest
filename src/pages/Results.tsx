@@ -29,6 +29,9 @@ export const Results = () => {
     (gamesPerPageOption) => gamesPerPageOption <= games.length
   );
 
+  const gamesPerPageOptionIndex =
+    filteredGamesPerPageOptions.indexOf(gamesPerPage);
+
   const title = `${
     games.length > 0 && searchText
       ? `${games.length} search results `
@@ -64,7 +67,10 @@ export const Results = () => {
             <Text>Games Per Page</Text>
             <Slider
               size="md"
-              defaultValue={[gamesPerPage]}
+              value={[
+                (100 / (filteredGamesPerPageOptions.length - 1)) *
+                  gamesPerPageOptionIndex,
+              ]}
               marks={filteredGamesPerPageOptions.map(
                 (gamesPerPageOption, i) => ({
                   label: gamesPerPageOption,
