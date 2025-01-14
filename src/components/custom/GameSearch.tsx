@@ -3,7 +3,9 @@ import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
-export const GameSearch = () => {
+export const GameSearch = (props: { showLoadingScreen?: () => void }) => {
+  const { showLoadingScreen = () => {} } = props;
+
   const [input, setInput] = useState("");
   const navigate = useNavigate();
 
@@ -17,6 +19,7 @@ export const GameSearch = () => {
         size="xl"
         onKeyDown={(e) => {
           if (e.key === "Enter") {
+            showLoadingScreen();
             navigate(`/search/${input}`);
           }
         }}
@@ -24,7 +27,10 @@ export const GameSearch = () => {
       <IconButton
         size="xl"
         colorPalette="blue"
-        onClick={() => navigate(`/search/${input}`)}
+        onClick={() => {
+          showLoadingScreen();
+          navigate(`/search/${input}`);
+        }}
         disabled={!input}
       >
         <AiOutlineSearch />

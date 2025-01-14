@@ -51,7 +51,7 @@ export const useGameResults = (gameName: string) => {
     console.timeEnd("fetch game results");
   }, [gameName, setGames, setCovers, setIsGameResultsLoading]);
 
-  return { games, covers, isGameResultsLoading };
+  return { games, covers, isGameResultsLoading, setIsGameResultsLoading };
 };
 
 export const useGameData = (id: number) => {

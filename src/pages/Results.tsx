@@ -1,7 +1,7 @@
 import { Box, Card, HStack, Text, VStack } from "@chakra-ui/react";
 import { GameSearch } from "@components/custom/GameSearch";
 import { APP_NAME } from "@constants/appName";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Loading } from "@pages/Loading";
 import { GameCard } from "@components/custom/GameCard";
@@ -14,7 +14,8 @@ const GAMES_PER_PAGE_OPTIONS = [1, 5, 10, 20, 50, 100, 200, 500];
 export const Results = () => {
   const { searchText = "" } = useParams();
 
-  const { games, covers, isGameResultsLoading } = useGameResults(searchText);
+  const { games, covers, isGameResultsLoading, setIsGameResultsLoading } =
+    useGameResults(searchText);
 
   const [gamesPerPage, setGamesPerPage] = useState(5);
   const [pageNumber, setPageNumber] = useState(1);
@@ -33,9 +34,7 @@ export const Results = () => {
     filteredGamesPerPageOptions.indexOf(gamesPerPage);
 
   const title = `${
-    games.length > 0 && searchText
-      ? `${games.length} search results `
-      : "Searching"
+    !isGameResultsLoading ? `${games.length} search results ` : "Searching"
   } for "${searchText}"`;
   useLayoutEffect(() => {
     window.document.title = `${title} - ${APP_NAME}`;
@@ -53,7 +52,7 @@ export const Results = () => {
       <Text textAlign="center" fontSize="4xl">
         {title}
       </Text>
-      <GameSearch />
+      <GameSearch showLoadingScreen={() => setIsGameResultsLoading(true)} />
       <HStack alignItems="start" width="100%">
         <Card.Root
           variant="subtle"
