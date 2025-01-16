@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start-cors-server": "node server.js",
-    "dev": "vite",
+    "dev": "concurrently \"vite\" \"node server.js\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
